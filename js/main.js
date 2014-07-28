@@ -10,7 +10,7 @@
 $(document).ready(function()
 {
 	// Display background image
-	$.backstretch("../img/background.jpg");
+	$.backstretch("http://www.timothy-flynn.com/img/background.jpg");
 
 	// Display resume - converted with zamzar.com
 	$("#resumeDiv").append("<img src='img/TimothyFlynnResume-042213.png' alt='' />");
