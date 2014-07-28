@@ -256,7 +256,7 @@ input[type=submit] {
 }
 
 .map {
-        float: right;
+	float: right;
 	height: 405px;
 	width: 420px;
 
@@ -265,9 +265,9 @@ input[type=submit] {
 	margin-top: -485px;
 	margin-right: 24px;
 
-        border: 5px solid rgba(255, 255, 255, 0.30);
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
+	border: 5px solid rgba(255, 255, 255, 0.30);
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 }

@@ -2,7 +2,7 @@
  * Scripts to handle the pop ups associated with the navigation links.
  *
  * @author Timothy Flynn
- * @version May 7, 2013
+ * @version July 28, 2014
  */
 
 /********** PAGE SETUP **********/
@@ -22,7 +22,7 @@ $(document).ready(function()
 	var map = L.map('map').setView([42.252156, -71.003295], 16);
 
 	L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-		id: 'examples.map-9ijuk24y'
+		id: 'trflynn89.j35n6m41'
 	}).addTo(map);
 
 	L.marker([42.252156, -71.003295]).addTo(map)
