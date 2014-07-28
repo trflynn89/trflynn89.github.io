@@ -7,6 +7,8 @@
 
 /********** PAGE SETUP **********/
 
+var contactMap;
+
 $(document).ready(function()
 {
 	// Display background image
@@ -19,13 +21,14 @@ $(document).ready(function()
 	$('.lazyYT').lazyYT();
 	
 	// Display map
-	var map = L.map('map').setView([42.252156, -71.003295], 16);
+	var coord = L.latLng(42.252156, -71.003295);
+	contactMap = L.map('map').setView(coord, 16);
 
 	L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-		id: 'trflynn89.j35n6m41'
-	}).addTo(map);
+		id: 'trflynn89.j35n6m41',
+	}).addTo(contactMap);
 
-	L.marker([42.252156, -71.003295]).addTo(map)
+	L.marker(coord).addTo(contactMap)
 		.bindPopup(
 			'<b>ViaSat, Inc.</b>' +
 			'<br />1250 Hancock Street 701-N' +
@@ -229,6 +232,7 @@ $(document).ready(function()
 	$("#contact").click(function() 
 	{
 		handleClick(Nav.Contact);
+		contactMap.invalidateSize();
 	});
 	$("#popupContactClose").click(function() 
 	{
