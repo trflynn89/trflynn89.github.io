@@ -32,7 +32,7 @@ $(document).ready(function()
 			'<br />Quincy, MA 02169'
 	).openPopup();
 
-	// Hide all popups so nothing jQuery has them loaded
+	// Hide all popups so jQuery has them loaded
 	$(".popup").hide();
 });
 
@@ -175,6 +175,8 @@ $(document).ready(function()
 			disableAllPopups();
 		}
 	});
+
+	// Mouse click
 	$('body').click(function(event)
 	{
 		if (event.target == $('body')[0])
@@ -244,47 +246,47 @@ var currId = "";
 
 function loadTravelImages()
 {
-	var res = '';
+	var html = '';
 	
-	res += '<div><img src="img/travel/001.jpg" class="image" id="trav-1" data-loc="Great Barrier Reef, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/002.jpg" class="image" id="trav-2" data-loc="Paradise, New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/003.jpg" class="image" id="trav-3" data-loc="Oahu, New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/004.jpg" class="image" id="trav-4" data-loc="Queenstown, New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/005.jpg" class="image" id="trav-5" data-loc="St. Kilda Beach - Melbourne, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/006.jpg" class="image" id="trav-6" data-loc="Melbourne Zoo - Melbourne, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/007.jpg" class="image" id="trav-7" data-loc="Melbourne Zoo - Melbourne, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/008.jpg" class="image" id="trav-8" data-loc="The Twelve Apostles - Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/009.jpg" class="image" id="trav-9" data-loc="Grampians National Park - Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/010.jpg" class="image" id="trav-10" data-loc="Grampians National Park - Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/011.jpg" class="image" id="trav-11" data-loc="Melbourne Cricket Ground - Melbourne, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/012.jpg" class="image" id="trav-12" data-loc="Werribee Open Range Zoo - Werribee, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/013.jpg" class="image" id="trav-13" data-loc="Healesville Sanctuary - Healesville, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/014.jpg" class="image" id="trav-14" data-loc="Healesville Sanctuary - Healesville, Victoria, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/015.jpg" class="image" id="trav-15" data-loc="Blue Mountains - New South Wales, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/016.jpg" class="image" id="trav-16" data-loc="Sydney Opera House - Sydney, New South Wales, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/017.jpg" class="image" id="trav-17" data-loc="Sydney Opera House - Sydney, New South Wales, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/018.jpg" class="image" id="trav-18" data-loc="Harbour Bridge - Sydney, New South Wales, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/019.jpg" class="image" id="trav-19" data-loc="Flynn Reef - Great Barrier Reef, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/020.jpg" class="image" id="trav-20" data-loc="Flynn Reef - Great Barrier Reef, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/021.jpg" class="image" id="trav-21" data-loc="Cook Strait - New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/022.jpg" class="image" id="trav-22" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/023.jpg" class="image" id="trav-23" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/024.jpg" class="image" id="trav-24" data-loc="Takaro Road, New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/025.jpg" class="image" id="trav-25" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/026.jpg" class="image" id="trav-26" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/027.jpg" class="image" id="trav-27" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/028.jpg" class="image" id="trav-28" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/029.jpg" class="image" id="trav-29" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/030.jpg" class="image" id="trav-30" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/031.jpg" class="image" id="trav-31" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/032.jpg" class="image" id="trav-32" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/033.jpg" class="image" id="trav-33" data-loc="New Zealand" alt = "" /></div>'
-	res += '<div><img src="img/travel/034.jpg" class="image" id="trav-34" data-loc="Pawtuckaway State Park - New Hampshire, US" alt = "" /></div>'
-	res += '<div><img src="img/travel/035.jpg" class="image" id="trav-35" data-loc="Pawtuckaway State Park - New Hampshire, US" alt = "" /></div>'
-	res += '<div><img src="img/travel/036.jpg" class="image" id="trav-36" data-loc="Townsville, Queensland, Australia" alt = "" /></div>'
-	res += '<div><img src="img/travel/037.jpg" class="image" id="trav-37" data-loc="Cozumel, Mexico" alt = "" /></div>'
+	html += '<div><img src="img/travel/001.jpg" class="image" id="trav-1" data-loc="Great Barrier Reef, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/002.jpg" class="image" id="trav-2" data-loc="Paradise, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/003.jpg" class="image" id="trav-3" data-loc="Oahu, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/004.jpg" class="image" id="trav-4" data-loc="Queenstown, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/005.jpg" class="image" id="trav-5" data-loc="St. Kilda Beach - Melbourne, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/006.jpg" class="image" id="trav-6" data-loc="Melbourne Zoo - Melbourne, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/007.jpg" class="image" id="trav-7" data-loc="Melbourne Zoo - Melbourne, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/008.jpg" class="image" id="trav-8" data-loc="The Twelve Apostles - Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/009.jpg" class="image" id="trav-9" data-loc="Grampians National Park - Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/010.jpg" class="image" id="trav-10" data-loc="Grampians National Park - Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/011.jpg" class="image" id="trav-11" data-loc="Melbourne Cricket Ground - Melbourne, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/012.jpg" class="image" id="trav-12" data-loc="Werribee Open Range Zoo - Werribee, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/013.jpg" class="image" id="trav-13" data-loc="Healesville Sanctuary - Healesville, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/014.jpg" class="image" id="trav-14" data-loc="Healesville Sanctuary - Healesville, Victoria, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/015.jpg" class="image" id="trav-15" data-loc="Blue Mountains - New South Wales, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/016.jpg" class="image" id="trav-16" data-loc="Sydney Opera House - Sydney, New South Wales, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/017.jpg" class="image" id="trav-17" data-loc="Sydney Opera House - Sydney, New South Wales, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/018.jpg" class="image" id="trav-18" data-loc="Harbour Bridge - Sydney, New South Wales, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/019.jpg" class="image" id="trav-19" data-loc="Flynn Reef - Great Barrier Reef, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/020.jpg" class="image" id="trav-20" data-loc="Flynn Reef - Great Barrier Reef, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/021.jpg" class="image" id="trav-21" data-loc="Cook Strait - New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/022.jpg" class="image" id="trav-22" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/023.jpg" class="image" id="trav-23" data-loc="Zirakzigil - New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/024.jpg" class="image" id="trav-24" data-loc="Takaro Road, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/025.jpg" class="image" id="trav-25" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/026.jpg" class="image" id="trav-26" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/027.jpg" class="image" id="trav-27" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/028.jpg" class="image" id="trav-28" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/029.jpg" class="image" id="trav-29" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/030.jpg" class="image" id="trav-30" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/031.jpg" class="image" id="trav-31" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/032.jpg" class="image" id="trav-32" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/033.jpg" class="image" id="trav-33" data-loc="New Zealand" alt = "" /></div>'
+	html += '<div><img src="img/travel/034.jpg" class="image" id="trav-34" data-loc="Pawtuckaway State Park - New Hampshire, US" alt = "" /></div>'
+	html += '<div><img src="img/travel/035.jpg" class="image" id="trav-35" data-loc="Pawtuckaway State Park - New Hampshire, US" alt = "" /></div>'
+	html += '<div><img src="img/travel/036.jpg" class="image" id="trav-36" data-loc="Townsville, Queensland, Australia" alt = "" /></div>'
+	html += '<div><img src="img/travel/037.jpg" class="image" id="trav-37" data-loc="Cozumel, Mexico" alt = "" /></div>'
 
-	$('#travelDiv').append(res);
+	$('#travelDiv').append(html);
 }
 
 $(document).ready(function()
