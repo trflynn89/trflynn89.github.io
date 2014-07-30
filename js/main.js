@@ -12,10 +12,10 @@ var contactMap;
 $(document).ready(function()
 {
 	// Display background image
-	$.backstretch("http://www.timothy-flynn.com/img/background.jpg");
+	$.backstretch('http://www.timothy-flynn.com/img/background.jpg');
 
 	// Display resume - converted with zamzar.com
-	$("#resumeDiv").append("<img src='img/TimothyFlynnResume-042213.png' alt='' />");
+	$('#resumeDiv').append('<img src="img/TimothyFlynnResume-042213.png" alt="" />');
 
 	// Display YouTube videos
 	$('.lazyYT').lazyYT();
@@ -36,7 +36,7 @@ $(document).ready(function()
 	).openPopup();
 
 	// Hide all popups so jQuery has them loaded
-	$(".popup").hide();
+	$('.popup').hide();
 });
 
 /********** GENERAL POP UPS **********/
@@ -44,10 +44,10 @@ $(document).ready(function()
 var Status = { Hidden : 0, Visible : 1 };
 
 var Nav = { Resume : 0, Projects : 1, Travel : 2, Music : 3, Contact : 4, NumNav : 5 };
-var NavId = new Array("#popupResume", "#popupProjects", "#popupTravel", "#popupMusic", "#popupContact");
+var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupMusic', '#popupContact');
 var NavStatus = new Array();
 var NavScroll = new Array();
-var NavSpeed = new Array(200, 200, 350, 350, "auto");
+var NavSpeed = new Array(200, 200, 350, 350, 'auto');
 var NavInertia = new Array(950, 950, 500, 500, 950);
 
 var handlingClick = false;
@@ -70,10 +70,10 @@ function loadPopup(nav)
 		return;
 	}
 
-	txt = NavId[nav];
+	var navId = NavId[nav];
 	NavStatus[nav] = Status.Visible;
 
-	$(txt).fadeIn("slow", function()
+	$(navId).fadeIn('slow', function()
 	{
 		handlingClick = false;
 	});
@@ -82,12 +82,12 @@ function loadPopup(nav)
 	{
 		NavScroll[nav] = Status.Visible;
 
-		$(txt).mCustomScrollbar(
+		$(navId).mCustomScrollbar(
 		{
 			autoHideScrollbar: true,
 			mouseWheelPixels: NavSpeed[nav],
 			scrollInertia: NavInertia[nav],
-			theme: "light-thin",
+			theme: 'light-thin',
 			advanced:
 			{
 				updateOnContentResize: true
@@ -106,10 +106,10 @@ function disablePopup(nav)
 		return;
 	}
 
-	txt = NavId[nav];
+	var navId = NavId[nav];
 		
 	NavStatus[nav] = Status.Hidden;
-	$(txt).fadeOut("slow", function()
+	$(navId).fadeOut('slow', function()
 	{
 		handlingClick = false;
 	});
@@ -140,15 +140,12 @@ function handleClick(nav)
 		return;
 	}
 
-	var txt = NavId[nav];
+	var navId = NavId[nav];
 	handlingClick = true;
 
 	if (NavStatus[nav] == Status.Hidden)
 	{
-		$(txt).css(
-		{
-			"visibility" : "visible"
-		});
+		$(navId).css('visibility', 'visible');
 
 		disableAllPopups(nav);
 		loadPopup(nav);
@@ -188,55 +185,41 @@ $(document).ready(function()
 		}
 	});
 
+	// Close button
+	$('.popupClose').click(function() 
+	{
+		disableAllPopups();
+	});
+
 	// Resume
-	$("#resume").click(function() 
+	$('#resume').click(function() 
 	{
 		handleClick(Nav.Resume);
 	});
-	$("#popupResumeClose").click(function() 
-	{
-		disablePopup(Nav.Resume);
-	});
 	
 	// Projects
-	$("#projects").click(function() 
+	$('#projects').click(function() 
 	{
 		handleClick(Nav.Projects);
 	});
-	$("#popupProjectsClose").click(function() 
-	{
-		disablePopup(Nav.Projects);
-	});
 	
 	// Travel
-	$("#travel").click(function() 
+	$('#travel').click(function() 
 	{
 		handleClick(Nav.Travel);
 	});
-	$("#popupTravelClose").click(function() 
-	{
-		disablePopup(Nav.Travel);
-	});
 
 	// Music
-	$("#music").click(function()
+	$('#music').click(function()
 	{
 		handleClick(Nav.Music);
 	});
-	$("#popupMusicClose").click(function()
-	{
-		disablePopup(Nav.Music);
-	});
 	
 	// Contact
-	$("#contact").click(function() 
+	$('#contact').click(function() 
 	{
 		handleClick(Nav.Contact);
 		contactMap.invalidateSize();
-	});
-	$("#popupContactClose").click(function() 
-	{
-		disablePopup(Nav.Contact);
 	});
 });
 
@@ -245,52 +228,61 @@ $(document).ready(function()
 var TravelStatus = { None : 0, Preview : 1, Enlarged : 2, Resizing : 3 };
 
 var currStatus = TravelStatus.None;
-var currText = "";
-var currId = "";
+var baseHtml = '';
+var currId = '';
+
+function getTravelImageDiv(imageId, imageLoc)
+{
+	var html = '<div>'
+	html += '<img src="img/travel/' + imageId + '.jpg" '
+	html += 'class="image" id="trav-' + imageId + '" '
+	html += 'data-loc="' + imageLoc + '" alt="" />'
+	html += '</div>'
+
+	return html;
+}
 
 function loadTravelImages()
 {
-	var html = '';
-	
-	html += '<div><img src="img/travel/001.jpg" class="image" id="trav-1" data-loc="Great Barrier Reef, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/002.jpg" class="image" id="trav-2" data-loc="Paradise, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/003.jpg" class="image" id="trav-3" data-loc="Oahu, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/004.jpg" class="image" id="trav-4" data-loc="Queenstown, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/005.jpg" class="image" id="trav-5" data-loc="St. Kilda Beach - Melbourne, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/006.jpg" class="image" id="trav-6" data-loc="Melbourne Zoo - Melbourne, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/007.jpg" class="image" id="trav-7" data-loc="Melbourne Zoo - Melbourne, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/008.jpg" class="image" id="trav-8" data-loc="The Twelve Apostles - Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/009.jpg" class="image" id="trav-9" data-loc="Grampians National Park - Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/010.jpg" class="image" id="trav-10" data-loc="Grampians National Park - Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/011.jpg" class="image" id="trav-11" data-loc="Melbourne Cricket Ground - Melbourne, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/012.jpg" class="image" id="trav-12" data-loc="Werribee Open Range Zoo - Werribee, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/013.jpg" class="image" id="trav-13" data-loc="Healesville Sanctuary - Healesville, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/014.jpg" class="image" id="trav-14" data-loc="Healesville Sanctuary - Healesville, Victoria, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/015.jpg" class="image" id="trav-15" data-loc="Blue Mountains - New South Wales, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/016.jpg" class="image" id="trav-16" data-loc="Sydney Opera House - Sydney, New South Wales, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/017.jpg" class="image" id="trav-17" data-loc="Sydney Opera House - Sydney, New South Wales, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/018.jpg" class="image" id="trav-18" data-loc="Harbour Bridge - Sydney, New South Wales, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/019.jpg" class="image" id="trav-19" data-loc="Flynn Reef - Great Barrier Reef, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/020.jpg" class="image" id="trav-20" data-loc="Flynn Reef - Great Barrier Reef, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/021.jpg" class="image" id="trav-21" data-loc="Cook Strait - New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/022.jpg" class="image" id="trav-22" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/023.jpg" class="image" id="trav-23" data-loc="Zirakzigil - New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/024.jpg" class="image" id="trav-24" data-loc="Takaro Road, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/025.jpg" class="image" id="trav-25" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/026.jpg" class="image" id="trav-26" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/027.jpg" class="image" id="trav-27" data-loc="Milford Sound, New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/028.jpg" class="image" id="trav-28" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/029.jpg" class="image" id="trav-29" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/030.jpg" class="image" id="trav-30" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/031.jpg" class="image" id="trav-31" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/032.jpg" class="image" id="trav-32" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/033.jpg" class="image" id="trav-33" data-loc="New Zealand" alt = "" /></div>'
-	html += '<div><img src="img/travel/034.jpg" class="image" id="trav-34" data-loc="Pawtuckaway State Park - New Hampshire, US" alt = "" /></div>'
-	html += '<div><img src="img/travel/035.jpg" class="image" id="trav-35" data-loc="Pawtuckaway State Park - New Hampshire, US" alt = "" /></div>'
-	html += '<div><img src="img/travel/036.jpg" class="image" id="trav-36" data-loc="Townsville, Queensland, Australia" alt = "" /></div>'
-	html += '<div><img src="img/travel/037.jpg" class="image" id="trav-37" data-loc="Cozumel, Mexico" alt = "" /></div>'
+	baseHtml += getTravelImageDiv('001', 'Great Barrier Reef, Australia');
+	baseHtml += getTravelImageDiv('002', 'Paradise, New Zealand');
+	baseHtml += getTravelImageDiv('003', 'Oahu, New Zealand');
+	baseHtml += getTravelImageDiv('004', 'Queenstown, New Zealand');
+	baseHtml += getTravelImageDiv('005', 'St. Kilda Beach - Melbourne, Victoria, Australia');
+	baseHtml += getTravelImageDiv('006', 'Melbourne Zoo - Melbourne, Victoria, Australia');
+	baseHtml += getTravelImageDiv('007', 'Melbourne Zoo - Melbourne, Victoria, Australia');
+	baseHtml += getTravelImageDiv('008', 'The Twelve Apostles - Victoria, Australia');
+	baseHtml += getTravelImageDiv('009', 'Grampians National Park - Victoria, Australia');
+	baseHtml += getTravelImageDiv('010', 'Grampians National Park - Victoria, Australia');
+	baseHtml += getTravelImageDiv('011', 'Melbourne Cricket Ground - Melbourne, Victoria, Australia');
+	baseHtml += getTravelImageDiv('012', 'Werribee Open Range Zoo - Werribee, Victoria, Australia');
+	baseHtml += getTravelImageDiv('013', 'Healesville Sanctuary - Healesville, Victoria, Australia');
+	baseHtml += getTravelImageDiv('014', 'Healesville Sanctuary - Healesville, Victoria, Australia');
+	baseHtml += getTravelImageDiv('015', 'Blue Mountains - New South Wales, Australia');
+	baseHtml += getTravelImageDiv('016', 'Sydney Opera House - Sydney, New South Wales, Australia');
+	baseHtml += getTravelImageDiv('017', 'Sydney Opera House - Sydney, New South Wales, Australia');
+	baseHtml += getTravelImageDiv('018', 'Harbour Bridge - Sydney, New South Wales, Australia');
+	baseHtml += getTravelImageDiv('019', 'Flynn Reef - Great Barrier Reef, Australia');
+	baseHtml += getTravelImageDiv('020', 'Flynn Reef - Great Barrier Reef, Australia');
+	baseHtml += getTravelImageDiv('021', 'Cook Strait - New Zealand');
+	baseHtml += getTravelImageDiv('022', 'New Zealand');
+	baseHtml += getTravelImageDiv('023', 'Zirakzigil - New Zealand');
+	baseHtml += getTravelImageDiv('024', 'Takaro Road - New Zealand');
+	baseHtml += getTravelImageDiv('025', 'Milford Sound - New Zealand');
+	baseHtml += getTravelImageDiv('026', 'Milford Sound - New Zealand');
+	baseHtml += getTravelImageDiv('027', 'Milford Sound - New Zealand');
+	baseHtml += getTravelImageDiv('028', 'New Zealand');
+	baseHtml += getTravelImageDiv('029', 'New Zealand');
+	baseHtml += getTravelImageDiv('030', 'New Zealand');
+	baseHtml += getTravelImageDiv('031', 'New Zealand');
+	baseHtml += getTravelImageDiv('032', 'New Zealand');
+	baseHtml += getTravelImageDiv('033', 'New Zealand');
+	baseHtml += getTravelImageDiv('034', 'Pawtuckaway State Park - New Hampshire, US');
+	baseHtml += getTravelImageDiv('035', 'Pawtuckaway State Park - New Hampshire, US');
+	baseHtml += getTravelImageDiv('036', 'Townsville, Queensland, Australia');
+	baseHtml += getTravelImageDiv('037', 'Cozumel, Mexico');
 
-	$('#travelDiv').append(html);
+	$('#travelDiv').append(baseHtml);
 }
 
 $(document).ready(function()
@@ -302,7 +294,7 @@ $(document).ready(function()
 	}
 });
 
-$("#travelDiv").click(function(event)
+$('#travelDiv').click(function(event)
 {
 	if (event.target.nodeName != 'IMG')
 	{
@@ -312,18 +304,16 @@ $("#travelDiv").click(function(event)
 	if (currStatus == TravelStatus.Preview)
 	{
 		currStatus = TravelStatus.Resizing;
+		currId = '#' + event.target.id;
 
-		currText = $("#travelDiv").html();
-		currId = "#" + event.target.id;
-
-		$("#travelDiv").fadeOut(function()
+		$('#travelDiv').fadeOut(function()
 		{
-			var html = "<div>";
-			html += "<h3>" + $(currId).data("loc") + "</h3>";
-			html += "<img src='" + event.target.src + "' class='image enlarge' alt ='' />";
-			html += "</div>";
+			var html = '<div>';
+			html += '<h3>' + $(currId).data('loc') + '</h3>';
+			html += '<img src="' + event.target.src + '" class="image enlarge" alt ="" />';
+			html += '</div>';
 	
-			$("#travelDiv").html(html).fadeIn(function()
+			$('#travelDiv').html(html).fadeIn(function()
 			{
 				currStatus = TravelStatus.Enlarged;
 			});
@@ -333,11 +323,11 @@ $("#travelDiv").click(function(event)
 	{
 		currStatus = TravelStatus.Resizing;
 
-		$("#travelDiv").fadeOut(function()
+		$('#travelDiv').fadeOut(function()
 		{
-			$("#travelDiv").html(currText).fadeIn(function()
+			$('#travelDiv').html(baseHtml).fadeIn(function()
 			{
-				$(NavId[Nav.Travel]).mCustomScrollbar("scrollTo", currId);
+				$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
 				currStatus = TravelStatus.Preview;
 			});
 		});
