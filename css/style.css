@@ -29,6 +29,7 @@ a {
 }
 
 a:hover {
+	cursor: pointer;
 	color: white;
 }
 
@@ -163,12 +164,13 @@ a:hover {
 	letter-spacing: 1px;
 	border-bottom: 1px solid #D3D3D3;
 	padding-bottom: 2px;
-	margin: 0;
+	margin: 0px 0px 20px 0px;
 }
 
 .popupClose {
 	right: 0;
 	top: 15px;
+	width: 22px;
 	position: absolute;
 	display: block;
 	opacity: 0.5;
@@ -179,11 +181,8 @@ a:hover {
 }
 
 .popupClose:hover {
+	cursor: pointer;
 	opacity: 1;
-}
-
-.popupClose img {
-	width: 20px;
 }
 
 form {
