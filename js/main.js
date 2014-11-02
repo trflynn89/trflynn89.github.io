@@ -236,7 +236,7 @@ function getTravelImageDiv(imageId, imageLoc)
 	var html = '<div>'
 	html += '<img src="img/travel/' + imageId + '.jpg" '
 	html += 'class="image" id="trav-' + imageId + '" '
-	html += 'data-loc="' + imageLoc + '" alt="" />'
+	html += 'data-location="' + imageLoc + '" alt="" />'
 	html += '</div>'
 
 	return html;
@@ -244,10 +244,10 @@ function getTravelImageDiv(imageId, imageLoc)
 
 function loadTravelImages()
 {
-	baseHtml += getTravelImageDiv('038', 'Little Cayman, Cayman Islands');
-	baseHtml += getTravelImageDiv('039', 'Little Cayman, Cayman Islands');
-	baseHtml += getTravelImageDiv('040', 'Little Cayman, Cayman Islands');
-	baseHtml += getTravelImageDiv('041', 'Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('038', 'Jackson Point - Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('039', 'Bus Stop - Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('040', 'Bus Stop - Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('041', 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands');
 	baseHtml += getTravelImageDiv('042', 'Little Cayman, Cayman Islands');
 	baseHtml += getTravelImageDiv('001', 'Great Barrier Reef, Australia');
 	baseHtml += getTravelImageDiv('002', 'Paradise, New Zealand');
@@ -314,7 +314,7 @@ $('#travelDiv').click(function(event)
 		$('#travelDiv').fadeOut(function()
 		{
 			var html = '<div>';
-			html += '<h3>' + $(currId).data('loc') + '</h3>';
+			html += '<h3>' + $(currId).data('location') + '</h3>';
 			html += '<img src="' + event.target.src + '" class="image enlarge" alt ="" />';
 			html += '</div>';
 
