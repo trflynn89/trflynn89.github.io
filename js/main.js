@@ -19,7 +19,7 @@ $(document).ready(function()
 
 	// Display YouTube videos
 	$('.lazyYT').lazyYT();
-	
+
 	// Display map
 	var coord = L.latLng(42.252156, -71.003295);
 	contactMap = L.map('map').setView(coord, 16);
@@ -107,7 +107,7 @@ function disablePopup(nav)
 	}
 
 	var navId = NavId[nav];
-		
+
 	NavStatus[nav] = Status.Hidden;
 	$(navId).fadeOut('slow', function()
 	{
@@ -168,7 +168,7 @@ $(document).ready(function()
 	}
 
 	// Key presses
-	$(document).keyup(function(event) 
+	$(document).keyup(function(event)
 	{
 		if (event.keyCode === 0x1B)
 		{
@@ -186,25 +186,25 @@ $(document).ready(function()
 	});
 
 	// Close button
-	$('.popupClose').click(function() 
+	$('.popupClose').click(function()
 	{
 		disableAllPopups();
 	});
 
 	// Resume
-	$('#resume').click(function() 
+	$('#resume').click(function()
 	{
 		handleClick(Nav.Resume);
 	});
-	
+
 	// Projects
-	$('#projects').click(function() 
+	$('#projects').click(function()
 	{
 		handleClick(Nav.Projects);
 	});
-	
+
 	// Travel
-	$('#travel').click(function() 
+	$('#travel').click(function()
 	{
 		handleClick(Nav.Travel);
 	});
@@ -214,9 +214,9 @@ $(document).ready(function()
 	{
 		handleClick(Nav.Music);
 	});
-	
+
 	// Contact
-	$('#contact').click(function() 
+	$('#contact').click(function()
 	{
 		handleClick(Nav.Contact);
 		contactMap.invalidateSize();
@@ -244,6 +244,11 @@ function getTravelImageDiv(imageId, imageLoc)
 
 function loadTravelImages()
 {
+	baseHtml += getTravelImageDiv('038', 'Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('039', 'Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('040', 'Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('041', 'Little Cayman, Cayman Islands');
+	baseHtml += getTravelImageDiv('042', 'Little Cayman, Cayman Islands');
 	baseHtml += getTravelImageDiv('001', 'Great Barrier Reef, Australia');
 	baseHtml += getTravelImageDiv('002', 'Paradise, New Zealand');
 	baseHtml += getTravelImageDiv('003', 'Oahu, New Zealand');
@@ -312,7 +317,7 @@ $('#travelDiv').click(function(event)
 			html += '<h3>' + $(currId).data('loc') + '</h3>';
 			html += '<img src="' + event.target.src + '" class="image enlarge" alt ="" />';
 			html += '</div>';
-	
+
 			$('#travelDiv').html(html).fadeIn(function()
 			{
 				currStatus = TravelStatus.Enlarged;
