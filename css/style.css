@@ -135,18 +135,24 @@ a:hover {
 .popup #travelDiv .image:hover {
 	cursor: pointer;
 
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
-	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
-	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 
 	transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-webkit-transition: all 0.3s ease-in-out;
 }
 
-.popup #travelDiv .enlarge {
-	margin-left: 50px;
-	width: 750px;
+.popup #travelDiv .enlargedDiv img {
+	vertical-align: middle;
+	margin-left: 5px;
+	margin-right: 5px;
+	float: none;
+}
+
+.popup #travelDiv .enlargedDiv img.enlargedImage {
+	width: 700px;
 	height: auto;
 }
 
@@ -178,6 +184,19 @@ a:hover {
 	transition: all .25s linear;
 	-moz-transition: all .25s linear;
 	-webkit-transition: all .25s linear;
+}
+
+.popupNav {
+	opacity: 0.5;
+
+	transition: all .25s linear;
+	-moz-transition: all .25s linear;
+	-webkit-transition: all .25s linear;
+}
+
+.popupClose:hover, .popupNav:hover {
+	cursor: pointer;
+	opacity: 1;
 }
 
 .popupClose:hover {
