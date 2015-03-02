@@ -43,12 +43,8 @@ a {
 	-webkit-box-shadow: 0px 8px 15px 5px rgba(0, 0, 0, 0.75);
 }
 
-.header:hover {
-	cursor: default;
-}
-
-.header .text {
-	margin-left: 10%;
+.header #navName {
+	margin-left: 6%;
 	font-size: 30px;
 	font-weight: bold;
 	float: left;
