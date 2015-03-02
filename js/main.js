@@ -7,6 +7,16 @@
 
 /********** PAGE SETUP **********/
 
+var Status = { Hidden : 0, Visible : 1 };
+
+var Nav = { Resume : 0, Projects : 1, Travel : 2, Music : 3, Contact : 4, NumNav : 5 };
+var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupMusic', '#popupContact');
+var NavLink = new Array('#resume', '#projects', '#travel', '#music', '#contact');
+var NavStatus = new Array();
+var NavScroll = new Array();
+var NavSpeed = new Array(200, 200, 50, 50, 'auto');
+var NavInertia = new Array(950, 950, 600, 600, 950);
+
 var contactMap;
 
 $(document).ready(function()
@@ -15,7 +25,7 @@ $(document).ready(function()
 	$.backstretch('http://www.timothy-flynn.com/img/background.jpg');
 
 	// Display resume - converted with zamzar.com
-	$('#resumeDiv').append('<img src="img/TimothyFlynnResume-030215.png" alt="" />');
+	$(NavId[Nav.Resume]).append('<img src="img/TimothyFlynnResume-030215.png" alt="" />');
 
 	// Display YouTube videos
 	$('.lazyYT').lazyYT();
@@ -41,16 +51,6 @@ $(document).ready(function()
 
 /********** GENERAL POP UPS **********/
 
-var Status = { Hidden : 0, Visible : 1 };
-
-var Nav = { Resume : 0, Projects : 1, Travel : 2, Music : 3, Contact : 4, NumNav : 5 };
-var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupMusic', '#popupContact');
-var NavLink = new Array('#resume', '#projects', '#travel', '#music', '#contact');
-var NavStatus = new Array();
-var NavScroll = new Array();
-var NavSpeed = new Array(200, 200, 50, 50, 'auto');
-var NavInertia = new Array(950, 950, 600, 600, 950);
-
 var handlingClick = false;
 var selectedNavClass = 'selected';
 
@@ -75,7 +75,7 @@ function loadPopup(nav)
 	var navId = NavId[nav];
 	NavStatus[nav] = Status.Visible;
 
-	$(navId).fadeIn('slow', function()
+	$(navId).parents('.popup').fadeIn('slow', function()
 	{
 		handlingClick = false;
 	});
@@ -84,7 +84,7 @@ function loadPopup(nav)
 	{
 		NavScroll[nav] = Status.Visible;
 
-		$(navId).mCustomScrollbar(
+		$(navId).parents('.popupContainer').mCustomScrollbar(
 		{
 			alwaysShowScrollbar : 1,
 			scrollInertia : NavInertia[nav],
@@ -117,7 +117,7 @@ function disablePopup(nav)
 	$(navLink).removeClass(selectedNavClass);
 
 	NavStatus[nav] = Status.Hidden;
-	$(navId).fadeOut('slow', function()
+	$(navId).parents('.popup').fadeOut('slow', function()
 	{
 		handlingClick = false;
 	});
@@ -157,7 +157,7 @@ function handleClick(nav)
 
 	if (NavStatus[nav] == Status.Hidden)
 	{
-		$(navId).css('visibility', 'visible');
+		$(navId).parents('.popup').css('visibility', 'visible');
 
 		disableAllPopups(nav);
 		loadPopup(nav);
@@ -341,11 +341,11 @@ function updateEnlargedImageDiv(direction)
 
 	currStatus = TravelStatus.Resizing;
 
-	$('#travelDiv').fadeOut(function()
+	$(NavId[Nav.Travel]).fadeOut(function()
 	{
 		var html = getEnlargedImageDiv(imageId);
 
-		$('#travelDiv').html(html).fadeIn(function()
+		$(NavId[Nav.Travel]).html(html).fadeIn(function()
 		{
 			currStatus = TravelStatus.Enlarged;
 		});
@@ -397,7 +397,7 @@ function loadTravelImages()
 	baseHtml += getPreviewImageDiv(36, 'Townsville, Queensland, Australia');
 	baseHtml += getPreviewImageDiv(37, 'Cozumel, Mexico');
 
-	$('#travelDiv').append(baseHtml);
+	$(NavId[Nav.Travel]).append(baseHtml);
 }
 
 $(document).ready(function()
@@ -409,7 +409,7 @@ $(document).ready(function()
 	}
 });
 
-$('#travelDiv').click(function(event)
+$(NavId[Nav.Travel]).click(function(event)
 {
 	if (event.target.id.indexOf(idHeader) == -1)
 	{
@@ -432,9 +432,9 @@ $('#travelDiv').click(function(event)
 		currId = '';
 		currStatus = TravelStatus.Resizing;
 
-		$('#travelDiv').fadeOut(function()
+		$(NavId[Nav.Travel]).fadeOut(function()
 		{
-			$('#travelDiv').html(baseHtml).fadeIn(function()
+			$(NavId[Nav.Travel]).html(baseHtml).fadeIn(function()
 			{
 				//$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
 				currStatus = TravelStatus.Preview;

@@ -100,6 +100,10 @@ a:hover {
 	display: none
 }
 
+.popup .popupContainer {
+	height: 90%;
+}
+
 .popup .video {
 	border: 2px solid rgba(0, 0, 0, 0.15);
 	border-radius: 5px;
@@ -125,14 +129,18 @@ a:hover {
 	-webkit-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
 }
 
-.popup #travelDiv .image {
+.popup #popupTravel {
+	margin-top: 10px;
+}
+
+.popup #popupTravel .image {
 	margin-right: 10px;
 	float: left;
-	width: 245px;
+	width: 250px;
 	height: 185px;
 }
 
-.popup #travelDiv .image:hover {
+.popup #popupTravel .image:hover {
 	cursor: pointer;
 
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
@@ -144,14 +152,14 @@ a:hover {
 	-webkit-transition: all 0.3s ease-in-out;
 }
 
-.popup #travelDiv .enlargedDiv img {
+.popup #popupTravel .enlargedDiv img {
 	vertical-align: middle;
 	margin-left: 5px;
 	margin-right: 5px;
 	float: none;
 }
 
-.popup #travelDiv .enlargedDiv img.enlargedImage {
+.popup #popupTravel .enlargedDiv img.enlargedImage {
 	width: 700px;
 	height: auto;
 }
@@ -170,12 +178,12 @@ a:hover {
 	letter-spacing: 1px;
 	border-bottom: 1px solid #D3D3D3;
 	padding-bottom: 2px;
-	margin: 0px 0px 20px 0px;
+	margin: 0px 0px 10px 0px;
 }
 
 .popupClose {
-	right: 0;
-	top: 15px;
+	right: 20px;
+	top: 30px;
 	width: 22px;
 	position: absolute;
 	display: block;
