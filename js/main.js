@@ -52,7 +52,8 @@ $(document).ready(function()
 /********** GENERAL POP UPS **********/
 
 var handlingClick = false;
-var selectedNavClass = 'selected';
+var navArrowId = '#navArrow';
+var loadedNav = -1;
 
 /**
  * Check if the naviagation link is valid.
@@ -60,6 +61,33 @@ var selectedNavClass = 'selected';
 function isValidNav(nav)
 {
 	return ((nav >= 0) && (nav < Nav.NumNav));
+}
+
+/**
+ * Reset the navigation arrow's position, based on the currently selected nav
+ * pane.
+ */
+function setNavArrowPos(nav)
+{
+	if (!isValidNav(nav) || (loadedNav == -1))
+	{
+		return;
+	}
+
+	navLink = NavLink[nav];
+
+	var left = $(navLink).position().left
+		+ parseInt($(navLink).css('padding-left'))
+		+ $(navLink).width() / 2
+		- $(navArrowId).width() / 2;
+
+	var top = $('nav').position().top
+		+ $('nav').height()
+		- $(navArrowId).height();
+
+	$(navArrowId).css({ 'visibility' : 'visible' });
+	$(navArrowId).css({ 'left' : left });
+	$(navArrowId).css({ 'top' : top });
 }
 
 /**
@@ -72,11 +100,17 @@ function loadPopup(nav)
 		return;
 	}
 
+	loadedNav = nav;
+
 	var navId = NavId[nav];
 	NavStatus[nav] = Status.Visible;
 
+	$(navArrowId).addClass('transition');
+	setNavArrowPos(nav);
+
 	$(navId).parents('.popup').fadeIn('slow', function()
 	{
+		$(navArrowId).removeClass('transition');
 		handlingClick = false;
 	});
 
@@ -111,12 +145,12 @@ function disablePopup(nav)
 		return;
 	}
 
-	var navId = NavId[nav];
-	var navLink = NavLink[nav];
-
-	$(navLink).removeClass(selectedNavClass);
+	$(navArrowId).css({ 'visibility' : 'hidden' });
+	loadedNav = -1;
 
 	NavStatus[nav] = Status.Hidden;
+	var navId = NavId[nav];
+
 	$(navId).parents('.popup').fadeOut('slow', function()
 	{
 		handlingClick = false;
@@ -151,9 +185,6 @@ function handleClick(nav)
 	handlingClick = true;
 
 	var navId = NavId[nav];
-	var navLink = NavLink[nav];
-
-	$(navLink).addClass(selectedNavClass);
 
 	if (NavStatus[nav] == Status.Hidden)
 	{
@@ -241,6 +272,17 @@ $(document).ready(function()
 		handleClick(Nav.Contact);
 		contactMap.invalidateSize();
 	});
+});
+
+/**
+ * Reset the navigation's arrow position when the window is resized.
+ */
+$(window).resize(function()
+{
+	if (!handlingClick)
+	{
+		setNavArrowPos(loadedNav);
+	}
 });
 
 /********** TRAVEL POP UP **********/
