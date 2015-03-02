@@ -45,6 +45,7 @@ var Status = { Hidden : 0, Visible : 1 };
 
 var Nav = { Resume : 0, Projects : 1, Travel : 2, Music : 3, Contact : 4, NumNav : 5 };
 var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupMusic', '#popupContact');
+var NavLink = new Array('#resume', '#projects', '#travel', '#music', '#contact');
 var NavStatus = new Array();
 var NavScroll = new Array();
 var NavSpeed = new Array(200, 200, 350, 350, 'auto');
@@ -87,7 +88,7 @@ function loadPopup(nav)
 			autoHideScrollbar: true,
 			mouseWheelPixels: NavSpeed[nav],
 			scrollInertia: NavInertia[nav],
-			theme: 'light-thin',
+			theme: 'dark-thin',
 			advanced:
 			{
 				updateOnContentResize: true
@@ -107,6 +108,9 @@ function disablePopup(nav)
 	}
 
 	var navId = NavId[nav];
+	var navLink = NavLink[nav];
+
+	$(navLink).removeClass('selected');
 
 	NavStatus[nav] = Status.Hidden;
 	$(navId).fadeOut('slow', function()
@@ -140,8 +144,12 @@ function handleClick(nav)
 		return;
 	}
 
-	var navId = NavId[nav];
 	handlingClick = true;
+
+	var navId = NavId[nav];
+	var navLink = NavLink[nav];
+
+	$(navLink).addClass('selected');
 
 	if (NavStatus[nav] == Status.Hidden)
 	{
