@@ -85,7 +85,7 @@ function loadPopup(nav)
 
 		$(navId).mCustomScrollbar(
 		{
-			autoHideScrollbar: true,
+			alwaysShowScrollbar : 1,
 			mouseWheelPixels: NavSpeed[nav],
 			scrollInertia: NavInertia[nav],
 			theme: 'dark-thin',
