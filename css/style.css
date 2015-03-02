@@ -90,7 +90,7 @@ a {
 .popup {
 	visibility: hidden;
 
-	height: 75%;
+	height: 80%;
 	width: 850px;
 
 	position : absolute;
@@ -99,7 +99,7 @@ a {
 	margin-left : -446px;
 
 	background-color: rgba(255, 255, 255, 0.85);
-	padding: 20px;
+	padding: 20px 20px 0px 20px;
 
 	border-radius: 4px;
 	-moz-border-radius: 4px;
