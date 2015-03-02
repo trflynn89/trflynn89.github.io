@@ -28,9 +28,6 @@ a {
 
 a:hover {
 	cursor: pointer;
-
-	padding-bottom: 2px;
-	border-bottom: 1px solid #000;
 }
 
 .selected {
@@ -64,6 +61,11 @@ a:hover {
 
 	font-size: 20px;
 	float: right;
+}
+
+.header .menu a:hover {
+	padding-bottom: 2px;
+	border-bottom: 1px solid #000;
 }
 
 .header .menu li {

@@ -48,8 +48,8 @@ var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupM
 var NavLink = new Array('#resume', '#projects', '#travel', '#music', '#contact');
 var NavStatus = new Array();
 var NavScroll = new Array();
-var NavSpeed = new Array(200, 200, 350, 350, 'auto');
-var NavInertia = new Array(950, 950, 500, 500, 950);
+var NavSpeed = new Array(200, 200, 50, 50, 'auto');
+var NavInertia = new Array(950, 950, 600, 600, 950);
 
 var handlingClick = false;
 
@@ -86,10 +86,13 @@ function loadPopup(nav)
 		$(navId).mCustomScrollbar(
 		{
 			alwaysShowScrollbar : 1,
-			mouseWheelPixels: NavSpeed[nav],
-			scrollInertia: NavInertia[nav],
-			theme: 'dark-thin',
-			advanced:
+			scrollInertia : NavInertia[nav],
+			theme : 'dark-thin',
+			mouseWheel :
+			{
+				deltaFactor : NavSpeed[nav]
+			},
+			advanced :
 			{
 				updateOnContentResize: true
 			}
