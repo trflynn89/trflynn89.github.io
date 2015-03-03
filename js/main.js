@@ -5,6 +5,24 @@
  * @version July 28, 2014
  */
 
+/********** IE DETECTION **********/
+
+/**
+ * Parse the User-Agent string to see if this browser is IE10 or earlier.
+ */
+function isEarlierThanIE11(v)
+{
+	return RegExp('msie', 'i').test(navigator.userAgent);
+}
+
+$(document).ready(function()
+{
+	if (isEarlierThanIE11())
+	{
+		window.location.replace('http://www.timothy-flynn.com/ie.html');
+	}
+});
+
 /********** PAGE SETUP **********/
 
 var Status = { Hidden : 0, Visible : 1 };
