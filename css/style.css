@@ -202,7 +202,7 @@ a {
 	border-width: 0px 0px 1px 0px;
 	border-style: solid;
 
-	border-image: linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
+	border-image: linear-gradient(to left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
 	-o-border-image: -o-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
 	-moz-border-image: -moz-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
 	-webkit-border-image: -webkit-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
