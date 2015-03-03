@@ -26,7 +26,7 @@ a {
 	text-decoration: none;
 }
 
-.header {
+header {
 	height: 80px;
 	line-height: 80px;
 
@@ -43,33 +43,30 @@ a {
 	-webkit-box-shadow: 0px 2px 15px 5px rgba(0, 0, 0, 0.75);
 }
 
-.header #navName {
-	margin-left: 6%;
-	font-size: 30px;
-	font-weight: bold;
-	float: left;
-}
-
-.header .menu {
-	display: table;
-	margin-right: 10%;
-	padding: 5px;
+header nav {
+	margin-right: 6%;
 	width: 35%;
 
 	font-size: 20px;
 	float: right;
 }
 
-.header .menu li {
+header nav ul {
+	text-align: center;
+	margin: 0px;
+
+	float: right;
+}
+
+header nav ul li {
 	display: table-cell;
-	padding: 0px 10px;
+	padding: 0px 15px;
 	width: 16.6666667%;
 
-	text-align: center;
 	list-style: none;
 }
 
-.header .menu li+li {
+header nav ul li+li {
 	border-width: 0px 0px 0px 1px;
 	border-style: solid;
 
@@ -79,17 +76,25 @@ a {
 	-webkit-border-image: -webkit-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
 }
 
-.header .menu li:hover {
+header nav ul li:hover {
 	cursor: pointer;
 }
 
-.header .menu #navArrow
+header #navSignature {
+	margin-left: 6%;
+	float: left;
+
+	font-size: 30px;
+	font-weight: bold;
+}
+
+header nav #navArrow
 {
 	position: absolute;
 	visibility: hidden;
 }
 
-.header .menu #navArrow.transition
+header nav #navArrow.transition
 {
 	transition: left 0.5s ease-in-out;
 	-o-transition: left 0.5s ease-in-out;
@@ -104,7 +109,7 @@ a {
 	width: 850px;
 
 	position : absolute;
-	top : 15%;
+	top : 13%;
 	left : 50%;
 	margin-left : -446px;
 
