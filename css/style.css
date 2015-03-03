@@ -88,14 +88,12 @@ header #navSignature {
 	font-weight: bold;
 }
 
-header nav #navArrow
-{
+header nav #navArrow {
 	position: absolute;
 	visibility: hidden;
 }
 
-header nav #navArrow.transition
-{
+header nav #navArrow.transition {
 	transition: left 0.5s ease-in-out;
 	-o-transition: left 0.5s ease-in-out;
 	-moz-transition: left 0.5s ease-in-out;
