@@ -12,15 +12,15 @@
  */
 function isEarlierThanIE11(v)
 {
-	return RegExp('msie', 'i').test(navigator.userAgent);
+    return RegExp('msie', 'i').test(navigator.userAgent);
 }
 
 $(document).ready(function()
 {
-	if (isEarlierThanIE11())
-	{
-		window.location.replace('http://www.timothy-flynn.com/ie.html');
-	}
+    if (isEarlierThanIE11())
+    {
+        window.location.replace('http://www.timothy-flynn.com/ie.html');
+    }
 });
 
 /********** PAGE SETUP **********/
@@ -39,32 +39,32 @@ var contactMap;
 
 $(document).ready(function()
 {
-	// Display background image
-	$.backstretch('http://www.timothy-flynn.com/img/background.jpg');
+    // Display background image
+    $.backstretch('http://www.timothy-flynn.com/img/background.jpg');
 
-	// Display resume - converted with zamzar.com
-	$(NavId[Nav.Resume]).append('<img src="img/TimothyFlynnResume-030215.png" alt="" />');
+    // Display resume - converted with zamzar.com
+    $(NavId[Nav.Resume]).append('<img src="img/TimothyFlynnResume-030215.png" alt="" />');
 
-	// Display YouTube videos
-	$('.lazyYT').lazyYT();
+    // Display YouTube videos
+    $('.lazyYT').lazyYT();
 
-	// Display map
-	var coord = L.latLng(42.252156, -71.003295);
-	contactMap = L.map('map').setView(coord, 16);
+    // Display map
+    var coord = L.latLng(42.252156, -71.003295);
+    contactMap = L.map('map').setView(coord, 16);
 
-	L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-		id: 'trflynn89.j35n6m41',
-	}).addTo(contactMap);
+    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+        id: 'trflynn89.j35n6m41'
+    }).addTo(contactMap);
 
-	L.marker(coord).addTo(contactMap)
-		.bindPopup(
-			'<b>ViaSat, Inc.</b>' +
-			'<br />1250 Hancock Street 701-N' +
-			'<br />Quincy, MA 02169'
-	).openPopup();
+    L.marker(coord).addTo(contactMap)
+        .bindPopup(
+            '<b>ViaSat, Inc.</b>' +
+            '<br />1250 Hancock Street 701-N' +
+            '<br />Quincy, MA 02169'
+    ).openPopup();
 
-	// Hide all popups so jQuery has them loaded
-	$('.popup').hide();
+    // Hide all popups so jQuery has them loaded
+    $('.popup').hide();
 });
 
 /********** GENERAL POP UPS **********/
@@ -78,7 +78,7 @@ var loadedNav = -1;
  */
 function isValidNav(nav)
 {
-	return ((nav >= 0) && (nav < Nav.NumNav));
+    return ((nav >= 0) && (nav < Nav.NumNav));
 }
 
 /**
@@ -87,25 +87,25 @@ function isValidNav(nav)
  */
 function setNavArrowPos(nav)
 {
-	if (!isValidNav(nav) || (loadedNav === -1))
-	{
-		return;
-	}
+    if (!isValidNav(nav) || (loadedNav === -1))
+    {
+        return;
+    }
 
-	navLink = NavLink[nav];
+    navLink = NavLink[nav];
 
-	var left = $(navLink).position().left
-		+ parseInt($(navLink).css('padding-left'))
-		+ $(navLink).width() / 2
-		- $(navArrowId).width() / 2;
+    var left = $(navLink).position().left
+        + parseInt($(navLink).css('padding-left'))
+        + $(navLink).width() / 2
+        - $(navArrowId).width() / 2;
 
-	var top = $('nav').position().top
-		+ $('nav').height()
-		- $(navArrowId).height();
+    var top = $('nav').position().top
+        + $('nav').height()
+        - $(navArrowId).height();
 
-	$(navArrowId).css({ 'visibility' : 'visible' });
-	$(navArrowId).css({ 'left' : left });
-	$(navArrowId).css({ 'top' : top });
+    $(navArrowId).css({ 'visibility' : 'visible' });
+    $(navArrowId).css({ 'left' : left });
+    $(navArrowId).css({ 'top' : top });
 }
 
 /**
@@ -113,44 +113,44 @@ function setNavArrowPos(nav)
  */
 function loadPopup(nav)
 {
-	if (!isValidNav(nav) || (NavStatus[nav] === Status.Visible))
-	{
-		return;
-	}
+    if (!isValidNav(nav) || (NavStatus[nav] === Status.Visible))
+    {
+        return;
+    }
 
-	loadedNav = nav;
+    loadedNav = nav;
 
-	var navId = NavId[nav];
-	NavStatus[nav] = Status.Visible;
+    var navId = NavId[nav];
+    NavStatus[nav] = Status.Visible;
 
-	$(navArrowId).addClass('transition');
-	setNavArrowPos(nav);
+    $(navArrowId).addClass('transition');
+    setNavArrowPos(nav);
 
-	$(navId).parents('.popup').fadeIn('slow', function()
-	{
-		$(navArrowId).removeClass('transition');
-		handlingClick = false;
-	});
+    $(navId).parents('.popup').fadeIn('slow', function()
+    {
+        $(navArrowId).removeClass('transition');
+        handlingClick = false;
+    });
 
-	if (NavScroll[nav] === Status.Hidden)
-	{
-		NavScroll[nav] = Status.Visible;
+    if (NavScroll[nav] === Status.Hidden)
+    {
+        NavScroll[nav] = Status.Visible;
 
-		$(navId).parents('.popupContainer').mCustomScrollbar(
-		{
-			alwaysShowScrollbar : 1,
-			scrollInertia : NavInertia[nav],
-			theme : 'dark-thin',
-			mouseWheel :
-			{
-				deltaFactor : NavSpeed[nav]
-			},
-			advanced :
-			{
-				updateOnContentResize: true
-			}
-		});
-	}
+        $(navId).parents('.popupContainer').mCustomScrollbar(
+        {
+            alwaysShowScrollbar : 1,
+            scrollInertia : NavInertia[nav],
+            theme : 'dark-thin',
+            mouseWheel :
+            {
+                deltaFactor : NavSpeed[nav]
+            },
+            advanced :
+            {
+                updateOnContentResize: true
+            }
+        });
+    }
 }
 
 /**
@@ -158,21 +158,21 @@ function loadPopup(nav)
  */
 function disablePopup(nav)
 {
-	if (!isValidNav(nav) || (NavStatus[nav] === Status.Hidden))
-	{
-		return;
-	}
+    if (!isValidNav(nav) || (NavStatus[nav] === Status.Hidden))
+    {
+        return;
+    }
 
-	$(navArrowId).css({ 'visibility' : 'hidden' });
-	loadedNav = -1;
+    $(navArrowId).css({ 'visibility' : 'hidden' });
+    loadedNav = -1;
 
-	NavStatus[nav] = Status.Hidden;
-	var navId = NavId[nav];
+    NavStatus[nav] = Status.Hidden;
+    var navId = NavId[nav];
 
-	$(navId).parents('.popup').fadeOut('slow', function()
-	{
-		handlingClick = false;
-	});
+    $(navId).parents('.popup').fadeOut('slow', function()
+    {
+        handlingClick = false;
+    });
 }
 
 /**
@@ -180,13 +180,13 @@ function disablePopup(nav)
  */
 function disableAllPopups(except)
 {
-	for (var i = 0; i < Nav.NumNav; ++i)
-	{
-		if (i !== except)
-		{
-			disablePopup(i);
-		}
-	}
+    for (var i = 0; i < Nav.NumNav; ++i)
+    {
+        if (i !== except)
+        {
+            disablePopup(i);
+        }
+    }
 }
 
 /**
@@ -195,26 +195,26 @@ function disableAllPopups(except)
  */
 function handleClick(nav)
 {
-	if (handlingClick || !isValidNav(nav))
-	{
-		return;
-	}
+    if (handlingClick || !isValidNav(nav))
+    {
+        return;
+    }
 
-	handlingClick = true;
+    handlingClick = true;
 
-	var navId = NavId[nav];
+    var navId = NavId[nav];
 
-	if (NavStatus[nav] === Status.Hidden)
-	{
-		$(navId).parents('.popup').css('visibility', 'visible');
+    if (NavStatus[nav] === Status.Hidden)
+    {
+        $(navId).parents('.popup').css('visibility', 'visible');
 
-		disableAllPopups(nav);
-		loadPopup(nav);
-	}
-	else
-	{
-		disablePopup(nav);
-	}
+        disableAllPopups(nav);
+        loadPopup(nav);
+    }
+    else
+    {
+        disablePopup(nav);
+    }
 }
 
 /**
@@ -222,74 +222,74 @@ function handleClick(nav)
  */
 $(document).ready(function()
 {
-	for (var i = 0; i < Nav.NumNav; ++i)
-	{
-		NavStatus.push(Status.Hidden);
-		NavScroll.push(Status.Hidden);
-	}
+    for (var i = 0; i < Nav.NumNav; ++i)
+    {
+        NavStatus.push(Status.Hidden);
+        NavScroll.push(Status.Hidden);
+    }
 
-	// Key presses
-	$(document).keyup(function(event)
-	{
-		if (event.keyCode === 0x1B)
-		{
-			disableAllPopups();
-		}
-		else if (event.keyCode === 0x25)
-		{
-			updateEnlargedImageDiv('left');
-		}
-		else if (event.keyCode === 0x27)
-		{
-			updateEnlargedImageDiv('right');
-		}
-	});
+    // Key presses
+    $(document).keyup(function(event)
+    {
+        if (event.keyCode === 0x1B)
+        {
+            disableAllPopups();
+        }
+        else if (event.keyCode === 0x25)
+        {
+            updateEnlargedImageDiv('left');
+        }
+        else if (event.keyCode === 0x27)
+        {
+            updateEnlargedImageDiv('right');
+        }
+    });
 
-	// Mouse click
-	$('body').click(function(event)
-	{
-		if (event.target === $('body')[0])
-		{
-			disableAllPopups();
-		}
-	});
+    // Mouse click
+    $('body').click(function(event)
+    {
+        if (event.target === $('body')[0])
+        {
+            disableAllPopups();
+        }
+    });
 
-	// Close button
-	$('.popupClose').click(function()
-	{
-		disableAllPopups();
-	});
+    // Close button
+    $('.popupClose').click(function()
+    {
+        disableAllPopups();
+    });
 
-	// Resume
-	$('#resume').click(function()
-	{
-		handleClick(Nav.Resume);
-	});
+    // Resume
+    $('#resume').click(function()
+    {
+        handleClick(Nav.Resume);
+    });
 
-	// Projects
-	$('#projects').click(function()
-	{
-		handleClick(Nav.Projects);
-	});
+    // Projects
+    $('#projects').click(function()
+    {
+        handleClick(Nav.Projects);
+    });
 
-	// Travel
-	$('#travel').click(function()
-	{
-		handleClick(Nav.Travel);
-	});
+    // Travel
+    $('#travel').click(function()
+    {
+        handleClick(Nav.Travel);
+    });
 
-	// Music
-	$('#music').click(function()
-	{
-		handleClick(Nav.Music);
-	});
+    // Music
+    $('#music').click(function()
+    {
+        handleClick(Nav.Music);
+    });
 
-	// Contact
-	$('#contact').click(function()
-	{
-		handleClick(Nav.Contact);
-		contactMap.invalidateSize();
-	});
+    // Contact
+    $('#contact').click(function()
+    {
+        handleClick(Nav.Contact);
+        contactMap.invalidateSize();
+    });
 });
 
 /**
@@ -297,10 +297,10 @@ $(document).ready(function()
  */
 $(window).resize(function()
 {
-	if (!handlingClick)
-	{
-		setNavArrowPos(loadedNav);
-	}
+    if (!handlingClick)
+    {
+        setNavArrowPos(loadedNav);
+    }
 });
 
 /********** TRAVEL POP UP **********/
@@ -324,14 +324,14 @@ var locationMap = Array();
  */
 function pad(val)
 {
-	val = val.toString();
+    val = val.toString();
 
-	while (val.length < idPadLen)
-	{
-		val = '0' + val;
-	}
+    while (val.length < idPadLen)
+    {
+        val = '0' + val;
+    }
 
-	return val;
+    return val;
 }
 
 /**
@@ -339,24 +339,24 @@ function pad(val)
  */
 function getPreviewImageDiv(imageId, imageLocation)
 {
-	imageIdStr = pad(imageId);
-	locationMap[imageId] = imageLocation;
+    imageIdStr = pad(imageId);
+    locationMap[imageId] = imageLocation;
 
-	var html = '<div>'
-	html += '<img src="img/travel/' + imageIdStr + '.jpg" '
-	html += 'class="image" id="' + idHeader + imageIdStr + '" alt="" />'
-	html += '</div>'
+    var html = '<div>'
+    html += '<img src="img/travel/' + imageIdStr + '.jpg" '
+    html += 'class="image" id="' + idHeader + imageIdStr + '" alt="" />'
+    html += '</div>'
 
-	if (imageId < minImageId)
-	{
-		minImageId = imageId;
-	}
-	if (imageId > maxImageId)
-	{
-		maxImageId = imageId;
-	}
+    if (imageId < minImageId)
+    {
+        minImageId = imageId;
+    }
+    if (imageId > maxImageId)
+    {
+        maxImageId = imageId;
+    }
 
-	return html;
+    return html;
 }
 
 /**
@@ -364,16 +364,16 @@ function getPreviewImageDiv(imageId, imageLocation)
  */
 function getEnlargedImageDiv(imageId)
 {
-	imageIdStr = pad(imageId);
+    imageIdStr = pad(imageId);
 
-	var html = '<div class="enlargedDiv">';
-	html += '<h3>' + locationMap[imageId] + '</h3>';
-	html += '<img src="img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
-	html += '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="" />';
-	html += '<img src="img/nav/right.png" id="navRight" class="popupNav" alt="" />'
-	html += '</div>';
+    var html = '<div class="enlargedDiv">';
+    html += '<h3>' + locationMap[imageId] + '</h3>';
+    html += '<img src="img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
+    html += '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="" />';
+    html += '<img src="img/nav/right.png" id="navRight" class="popupNav" alt="" />'
+    html += '</div>';
 
-	return html;
+    return html;
 }
 
 /**
@@ -382,123 +382,123 @@ function getEnlargedImageDiv(imageId)
  */
 function updateEnlargedImageDiv(direction)
 {
-	imageId = parseInt(currId.substring(1 + idHeader.length));
+    imageId = parseInt(currId.substring(1 + idHeader.length));
 
-	if ((NavStatus[Nav.Travel] === Status.Hidden) || isNaN(imageId))
-	{
-		return;
-	}
-	else if (direction === 'left')
-	{
-		imageId = (imageId > minImageId ? imageId - 1 : maxImageId);
-		currId = '#' + idHeader + pad(imageId);
-	}
-	else if (direction === 'right')
-	{
-		imageId = (imageId < maxImageId ? imageId + 1 : minImageId);
-		currId = '#' + idHeader + pad(imageId);
-	}
+    if ((NavStatus[Nav.Travel] === Status.Hidden) || isNaN(imageId))
+    {
+        return;
+    }
+    else if (direction === 'left')
+    {
+        imageId = (imageId > minImageId ? imageId - 1 : maxImageId);
+        currId = '#' + idHeader + pad(imageId);
+    }
+    else if (direction === 'right')
+    {
+        imageId = (imageId < maxImageId ? imageId + 1 : minImageId);
+        currId = '#' + idHeader + pad(imageId);
+    }
 
-	currStatus = TravelStatus.Resizing;
+    currStatus = TravelStatus.Resizing;
 
-	$(NavId[Nav.Travel]).fadeOut(function()
-	{
-		var html = getEnlargedImageDiv(imageId);
+    $(NavId[Nav.Travel]).fadeOut(function()
+    {
+        var html = getEnlargedImageDiv(imageId);
 
-		$(NavId[Nav.Travel]).html(html).fadeIn(function()
-		{
-			currStatus = TravelStatus.Enlarged;
-		});
-	});
+        $(NavId[Nav.Travel]).html(html).fadeIn(function()
+        {
+            currStatus = TravelStatus.Enlarged;
+        });
+    });
 }
 
 function loadTravelImages()
 {
-	baseHtml += getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands');
-	baseHtml += getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands');
-	baseHtml += getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands');
-	baseHtml += getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands');
-	baseHtml += getPreviewImageDiv(42, 'Little Cayman, Cayman Islands');
-	baseHtml += getPreviewImageDiv(1,  'Great Barrier Reef, Australia');
-	baseHtml += getPreviewImageDiv(2,  'Paradise, New Zealand');
-	baseHtml += getPreviewImageDiv(3,  'Oahu, New Zealand');
-	baseHtml += getPreviewImageDiv(4,  'Queenstown, New Zealand');
-	baseHtml += getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia');
-	baseHtml += getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia');
-	baseHtml += getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia');
-	baseHtml += getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia');
-	baseHtml += getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia');
-	baseHtml += getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia');
-	baseHtml += getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia');
-	baseHtml += getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia');
-	baseHtml += getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia');
-	baseHtml += getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia');
-	baseHtml += getPreviewImageDiv(21, 'Cook Strait - New Zealand');
-	baseHtml += getPreviewImageDiv(22, 'New Zealand');
-	baseHtml += getPreviewImageDiv(23, 'Zirakzigil - New Zealand');
-	baseHtml += getPreviewImageDiv(24, 'Takaro Road - New Zealand');
-	baseHtml += getPreviewImageDiv(25, 'Milford Sound - New Zealand');
-	baseHtml += getPreviewImageDiv(26, 'Milford Sound - New Zealand');
-	baseHtml += getPreviewImageDiv(27, 'Milford Sound - New Zealand');
-	baseHtml += getPreviewImageDiv(28, 'New Zealand');
-	baseHtml += getPreviewImageDiv(29, 'New Zealand');
-	baseHtml += getPreviewImageDiv(30, 'New Zealand');
-	baseHtml += getPreviewImageDiv(31, 'New Zealand');
-	baseHtml += getPreviewImageDiv(32, 'New Zealand');
-	baseHtml += getPreviewImageDiv(33, 'New Zealand');
-	baseHtml += getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US');
-	baseHtml += getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US');
-	baseHtml += getPreviewImageDiv(36, 'Townsville, Queensland, Australia');
-	baseHtml += getPreviewImageDiv(37, 'Cozumel, Mexico');
+    baseHtml += getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands');
+    baseHtml += getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands');
+    baseHtml += getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands');
+    baseHtml += getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands');
+    baseHtml += getPreviewImageDiv(42, 'Little Cayman, Cayman Islands');
+    baseHtml += getPreviewImageDiv(1,  'Great Barrier Reef, Australia');
+    baseHtml += getPreviewImageDiv(2,  'Paradise, New Zealand');
+    baseHtml += getPreviewImageDiv(3,  'Oahu, New Zealand');
+    baseHtml += getPreviewImageDiv(4,  'Queenstown, New Zealand');
+    baseHtml += getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia');
+    baseHtml += getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia');
+    baseHtml += getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia');
+    baseHtml += getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia');
+    baseHtml += getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia');
+    baseHtml += getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia');
+    baseHtml += getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia');
+    baseHtml += getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia');
+    baseHtml += getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia');
+    baseHtml += getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia');
+    baseHtml += getPreviewImageDiv(21, 'Cook Strait - New Zealand');
+    baseHtml += getPreviewImageDiv(22, 'New Zealand');
+    baseHtml += getPreviewImageDiv(23, 'Zirakzigil - New Zealand');
+    baseHtml += getPreviewImageDiv(24, 'Takaro Road - New Zealand');
+    baseHtml += getPreviewImageDiv(25, 'Milford Sound - New Zealand');
+    baseHtml += getPreviewImageDiv(26, 'Milford Sound - New Zealand');
+    baseHtml += getPreviewImageDiv(27, 'Milford Sound - New Zealand');
+    baseHtml += getPreviewImageDiv(28, 'New Zealand');
+    baseHtml += getPreviewImageDiv(29, 'New Zealand');
+    baseHtml += getPreviewImageDiv(30, 'New Zealand');
+    baseHtml += getPreviewImageDiv(31, 'New Zealand');
+    baseHtml += getPreviewImageDiv(32, 'New Zealand');
+    baseHtml += getPreviewImageDiv(33, 'New Zealand');
+    baseHtml += getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US');
+    baseHtml += getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US');
+    baseHtml += getPreviewImageDiv(36, 'Townsville, Queensland, Australia');
+    baseHtml += getPreviewImageDiv(37, 'Cozumel, Mexico');
 
-	$(NavId[Nav.Travel]).append(baseHtml);
+    $(NavId[Nav.Travel]).append(baseHtml);
 }
 
 $(document).ready(function()
 {
-	if (currStatus === TravelStatus.None)
-	{
-		currStatus = TravelStatus.Preview;
-		loadTravelImages();
-	}
+    if (currStatus === TravelStatus.None)
+    {
+        currStatus = TravelStatus.Preview;
+        loadTravelImages();
+    }
 });
 
 $(NavId[Nav.Travel]).click(function(event)
 {
-	if (event.target.id.indexOf(idHeader) === -1)
-	{
-		if (event.target.id === 'navLeft')
-		{
-			updateEnlargedImageDiv('left');
-		}
-		else if (event.target.id === 'navRight')
-		{
-			updateEnlargedImageDiv('right');
-		}
-	}
-	else if (currStatus === TravelStatus.Preview)
-	{
-		currId = '#' + event.target.id;
-		updateEnlargedImageDiv();
-	}
-	else if (currStatus === TravelStatus.Enlarged)
-	{
-		currId = '';
-		currStatus = TravelStatus.Resizing;
+    if (event.target.id.indexOf(idHeader) === -1)
+    {
+        if (event.target.id === 'navLeft')
+        {
+            updateEnlargedImageDiv('left');
+        }
+        else if (event.target.id === 'navRight')
+        {
+            updateEnlargedImageDiv('right');
+        }
+    }
+    else if (currStatus === TravelStatus.Preview)
+    {
+        currId = '#' + event.target.id;
+        updateEnlargedImageDiv();
+    }
+    else if (currStatus === TravelStatus.Enlarged)
+    {
+        currId = '';
+        currStatus = TravelStatus.Resizing;
 
-		$(NavId[Nav.Travel]).fadeOut(function()
-		{
-			$(NavId[Nav.Travel]).html(baseHtml).fadeIn(function()
-			{
-				//$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
-				currStatus = TravelStatus.Preview;
-			});
-		});
-	}
+        $(NavId[Nav.Travel]).fadeOut(function()
+        {
+            $(NavId[Nav.Travel]).html(baseHtml).fadeIn(function()
+            {
+                //$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
+                currStatus = TravelStatus.Preview;
+            });
+        });
+    }
 });

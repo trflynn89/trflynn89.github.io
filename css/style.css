@@ -1,342 +1,342 @@
 html, body {
-	height: 100%;
+    height: 100%;
 }
 
 * {
-	outline: none;
+    outline: none;
 }
 
 /* Prevent blue borders in Webkit and IE */
 *:focus, a img {
-	border: 0;
-	outline: none;
+    border: 0;
+    outline: none;
 }
 
 body {
-	font-family: "Segoe UI", sans-serif;
+    font-family: "Segoe UI", sans-serif;
 
-	min-width: 900px;
-	margin: 0px;
-	padding: 0px;
-	height: 100%;
-	width: 100%;
+    min-width: 900px;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
 }
 
 a {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 header {
-	height: 80px;
-	line-height: 80px;
+    height: 80px;
+    line-height: 80px;
 
-	background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.85);
 
-	user-select: none;
-	-o-user-select: none;
-	-moz-user-select: -moz-none;
-	-webkit-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
 
-	box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.75);
-	-o-box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.75);
-	-moz-box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.75);
-	-webkit-box-shadow: 0px 2px 15px 5px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.75);
+    -o-box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 0px 2px 15px 5px rgba(0, 0, 0, 0.75);
 }
 
 header nav {
-	margin-right: 6%;
-	width: 35%;
+    margin-right: 6%;
+    width: 35%;
 
-	font-size: 20px;
-	float: right;
+    font-size: 20px;
+    float: right;
 }
 
 header nav ul {
-	text-align: center;
-	margin: 0px;
+    text-align: center;
+    margin: 0px;
 
-	float: right;
+    float: right;
 }
 
 header nav ul li {
-	display: table-cell;
-	padding: 0px 15px;
-	width: 16.6666667%;
+    display: table-cell;
+    padding: 0px 15px;
+    width: 16.6666667%;
 
-	list-style: none;
+    list-style: none;
 }
 
 header nav ul li+li {
-	border-width: 0px 0px 0px 1px;
-	border-style: solid;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
 
-	border-image: linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
-	-o-border-image: -o-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
-	-moz-border-image: -moz-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
-	-webkit-border-image: -webkit-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
+    border-image: linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
+    -o-border-image: -o-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
+    -moz-border-image: -moz-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
+    -webkit-border-image: -webkit-linear-gradient(transparent 20%, rgba(10, 10, 10, 0.6) 50%, transparent 80%) 1 100%;
 }
 
 header nav ul li:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 header #navSignature {
-	margin-left: 6%;
-	float: left;
+    margin-left: 6%;
+    float: left;
 
-	font-size: 30px;
-	font-weight: bold;
+    font-size: 30px;
+    font-weight: bold;
 }
 
 header nav #navArrow {
-	position: absolute;
-	visibility: hidden;
+    position: absolute;
+    visibility: hidden;
 }
 
 header nav #navArrow.transition {
-	transition: left 0.5s ease-in-out;
-	-o-transition: left 0.5s ease-in-out;
-	-moz-transition: left 0.5s ease-in-out;
-	-webkit-transition: left 0.5s ease-in-out;
+    transition: left 0.5s ease-in-out;
+    -o-transition: left 0.5s ease-in-out;
+    -moz-transition: left 0.5s ease-in-out;
+    -webkit-transition: left 0.5s ease-in-out;
 }
 
 .popup {
-	visibility: hidden;
+    visibility: hidden;
 
-	height: 80%;
-	width: 850px;
+    height: 80%;
+    width: 850px;
 
-	position : absolute;
-	top : 13%;
-	left : 50%;
-	margin-left : -446px;
+    position : absolute;
+    top : 13%;
+    left : 50%;
+    margin-left : -446px;
 
-	background-color: rgba(255, 255, 255, 0.85);
-	padding: 20px 20px 0px 20px;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 20px 20px 0px 20px;
 
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
 
 .popup article {
-	display: none
+    display: none
 }
 
 .popup .popupContainer {
-	height: 90%;
+    height: 90%;
 }
 
 .popup .video {
-	border: 2px solid rgba(0, 0, 0, 0.15);
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .popup .image {
-	margin-left: 10px;
-	margin-bottom: 10px;
-	float: right;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    float: right;
 
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 
-	box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
-	-moz-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
-	-webkit-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    -moz-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    -webkit-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
 }
 
 .popup #popupTravel {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 .popup #popupTravel .image {
-	margin-right: 10px;
-	float: left;
-	width: 250px;
-	height: 185px;
+    margin-right: 10px;
+    float: left;
+    width: 250px;
+    height: 185px;
 }
 
 .popup #popupTravel .image:hover {
-	cursor: pointer;
+    cursor: pointer;
 
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 
-	transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
 }
 
 .popup #popupTravel .enlargedDiv img {
-	vertical-align: middle;
-	margin-left: 5px;
-	margin-right: 5px;
-	float: none;
+    vertical-align: middle;
+    margin-left: 5px;
+    margin-right: 5px;
+    float: none;
 }
 
 .popup #popupTravel .enlargedDiv img.enlargedImage {
-	width: 700px;
-	height: auto;
+    width: 700px;
+    height: auto;
 }
 
 .popup p {
-	text-align: justify;
-	padding-left: 10px;
-	padding-right: 10px;
-	font-size: 16px;
-	line-height: 24px;
+    text-align: justify;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+    line-height: 24px;
 }
 
 .popup h1 {
-	text-align: left;
-	font-size: 30px;
-	letter-spacing: 1px;
-	padding-bottom: 10px;
-	margin: 0px 50px 10px 10px;
+    text-align: left;
+    font-size: 30px;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
+    margin: 0px 50px 10px 10px;
 
-	border-width: 0px 0px 1px 0px;
-	border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
 
-	border-image: linear-gradient(to left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
-	-o-border-image: -o-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
-	-moz-border-image: -moz-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
-	-webkit-border-image: -webkit-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
+    border-image: linear-gradient(to left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
+    -o-border-image: -o-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
+    -moz-border-image: -moz-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
+    -webkit-border-image: -webkit-linear-gradient(left, transparent, rgba(10, 10, 10, 0.6), transparent) 100% 1;
 }
 
 .popupClose {
-	right: 20px;
-	top: 30px;
-	width: 22px;
-	position: absolute;
-	display: block;
-	opacity: 0.5;
+    right: 20px;
+    top: 30px;
+    width: 22px;
+    position: absolute;
+    display: block;
+    opacity: 0.5;
 
-	transition: all .25s linear;
-	-moz-transition: all .25s linear;
-	-webkit-transition: all .25s linear;
+    transition: all .25s linear;
+    -moz-transition: all .25s linear;
+    -webkit-transition: all .25s linear;
 }
 
 .popupNav {
-	opacity: 0.5;
+    opacity: 0.5;
 
-	transition: all .25s linear;
-	-moz-transition: all .25s linear;
-	-webkit-transition: all .25s linear;
+    transition: all .25s linear;
+    -moz-transition: all .25s linear;
+    -webkit-transition: all .25s linear;
 }
 
 .popupClose:hover, .popupNav:hover {
-	cursor: pointer;
-	opacity: 1;
+    cursor: pointer;
+    opacity: 1;
 }
 
 .popupClose:hover {
-	cursor: pointer;
-	opacity: 1;
+    cursor: pointer;
+    opacity: 1;
 }
 
 form {
-	margin-left: 25px;
-	width: 45%;
+    margin-left: 25px;
+    width: 45%;
 }
 
 input, textarea {
-	display: block;
-	width: 300px;
-	min-height: 30px;
-	margin-bottom: 16px;
-	margin-top: 8px;
+    display: block;
+    width: 300px;
+    min-height: 30px;
+    margin-bottom: 16px;
+    margin-top: 8px;
 
-	padding-left: 8px;
-	padding-right: 8px;
+    padding-left: 8px;
+    padding-right: 8px;
 
-	font-family: "Segoe UI", sans-serif;
-	background-color: transparent;
+    font-family: "Segoe UI", sans-serif;
+    background-color: transparent;
 
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 
-	transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
 
 }
 
 textarea {
-	resize: none;
-	min-height: 220px;
-	padding-top: 8px;
-	padding-right: 8px;
-	overflow: auto;
+    resize: none;
+    min-height: 220px;
+    padding-top: 8px;
+    padding-right: 8px;
+    overflow: auto;
 }
 
 input:focus, textarea:focus {
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
 input[type=submit] {
-	cursor: pointer;
-	font-size: 20px;
-	width: 318px;
-	padding: 8px;
-	background: none;
-	opacity: 1.0;
+    cursor: pointer;
+    font-size: 20px;
+    width: 318px;
+    padding: 8px;
+    background: none;
+    opacity: 1.0;
 }
 
 input[type=submit]:hover {
-	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-	-webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
 .social-network {
-	float: right;
-	margin-top: -64px;
-	margin-right: 85px;
+    float: right;
+    margin-top: -64px;
+    margin-right: 85px;
 }
 
 .social-network img {
-	margin-left: 35px;
-	opacity: 0.6;
+    margin-left: 35px;
+    opacity: 0.6;
 
-	transition: all 0.5s ease-out;
-	-moz-transition: all 0.5s ease-out;
-	-webkit-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
 }
 
 .social-network img:hover {
-	opacity: 1;
+    opacity: 1;
 }
 
 #map {
-	float: right;
-	height: 403px;
-	width: 420px;
+    float: right;
+    height: 403px;
+    width: 420px;
 
-	color: black;
+    color: black;
 
-	margin-top: -485px;
-	margin-right: 24px;
+    margin-top: -485px;
+    margin-right: 24px;
 
-	border: 5px solid rgba(255, 255, 255, 0.30);
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+    border: 5px solid rgba(255, 255, 255, 0.30);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
