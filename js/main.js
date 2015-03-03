@@ -87,7 +87,7 @@ function isValidNav(nav)
  */
 function setNavArrowPos(nav)
 {
-	if (!isValidNav(nav) || (loadedNav == -1))
+	if (!isValidNav(nav) || (loadedNav === -1))
 	{
 		return;
 	}
@@ -113,7 +113,7 @@ function setNavArrowPos(nav)
  */
 function loadPopup(nav)
 {
-	if (!isValidNav(nav) || (NavStatus[nav] == Status.Visible))
+	if (!isValidNav(nav) || (NavStatus[nav] === Status.Visible))
 	{
 		return;
 	}
@@ -132,7 +132,7 @@ function loadPopup(nav)
 		handlingClick = false;
 	});
 
-	if (NavScroll[nav] == Status.Hidden)
+	if (NavScroll[nav] === Status.Hidden)
 	{
 		NavScroll[nav] = Status.Visible;
 
@@ -158,7 +158,7 @@ function loadPopup(nav)
  */
 function disablePopup(nav)
 {
-	if (!isValidNav(nav) || (NavStatus[nav] == Status.Hidden))
+	if (!isValidNav(nav) || (NavStatus[nav] === Status.Hidden))
 	{
 		return;
 	}
@@ -182,7 +182,7 @@ function disableAllPopups(except)
 {
 	for (var i = 0; i < Nav.NumNav; ++i)
 	{
-		if (i != except)
+		if (i !== except)
 		{
 			disablePopup(i);
 		}
@@ -204,7 +204,7 @@ function handleClick(nav)
 
 	var navId = NavId[nav];
 
-	if (NavStatus[nav] == Status.Hidden)
+	if (NavStatus[nav] === Status.Hidden)
 	{
 		$(navId).parents('.popup').css('visibility', 'visible');
 
@@ -248,7 +248,7 @@ $(document).ready(function()
 	// Mouse click
 	$('body').click(function(event)
 	{
-		if (event.target == $('body')[0])
+		if (event.target === $('body')[0])
 		{
 			disableAllPopups();
 		}
@@ -384,16 +384,16 @@ function updateEnlargedImageDiv(direction)
 {
 	imageId = parseInt(currId.substring(1 + idHeader.length));
 
-	if ((NavStatus[Nav.Travel] == Status.Hidden) || isNaN(imageId))
+	if ((NavStatus[Nav.Travel] === Status.Hidden) || isNaN(imageId))
 	{
 		return;
 	}
-	else if (direction == 'left')
+	else if (direction === 'left')
 	{
 		imageId = (imageId > minImageId ? imageId - 1 : maxImageId);
 		currId = '#' + idHeader + pad(imageId);
 	}
-	else if (direction == 'right')
+	else if (direction === 'right')
 	{
 		imageId = (imageId < maxImageId ? imageId + 1 : minImageId);
 		currId = '#' + idHeader + pad(imageId);
@@ -462,7 +462,7 @@ function loadTravelImages()
 
 $(document).ready(function()
 {
-	if (currStatus == TravelStatus.None)
+	if (currStatus === TravelStatus.None)
 	{
 		currStatus = TravelStatus.Preview;
 		loadTravelImages();
@@ -471,23 +471,23 @@ $(document).ready(function()
 
 $(NavId[Nav.Travel]).click(function(event)
 {
-	if (event.target.id.indexOf(idHeader) == -1)
+	if (event.target.id.indexOf(idHeader) === -1)
 	{
-		if (event.target.id == 'navLeft')
+		if (event.target.id === 'navLeft')
 		{
 			updateEnlargedImageDiv('left');
 		}
-		else if (event.target.id == 'navRight')
+		else if (event.target.id === 'navRight')
 		{
 			updateEnlargedImageDiv('right');
 		}
 	}
-	else if (currStatus == TravelStatus.Preview)
+	else if (currStatus === TravelStatus.Preview)
 	{
 		currId = '#' + event.target.id;
 		updateEnlargedImageDiv();
 	}
-	else if (currStatus == TravelStatus.Enlarged)
+	else if (currStatus === TravelStatus.Enlarged)
 	{
 		currId = '';
 		currStatus = TravelStatus.Resizing;
