@@ -19,7 +19,7 @@ $(document).ready(function()
 {
     if (isEarlierThanIE11())
     {
-        window.location.replace('http://www.timothy-flynn.com/ie.html');
+        window.location.replace('http://timothy-flynn.com/ie.html');
     }
 });
 
@@ -40,7 +40,7 @@ var contactMap;
 $(document).ready(function()
 {
     // Display background image
-    $.backstretch('http://www.timothy-flynn.com/img/background.jpg');
+    $.backstretch('http://timothy-flynn.com/img/background.jpg');
 
     // Display resume - converted with zamzar.com
     $(NavId[Nav.Resume]).append('<img src="img/TimothyFlynnResume-030215.png" alt="" />');
