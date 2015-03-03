@@ -67,21 +67,20 @@ a {
 
 	text-align: center;
 	list-style: none;
-
-	border-width: 1px;
-	border-style: solid;
-
-	border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1 100%;
-	-moz-border-image: -moz-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1 100%;
-	-webkit-border-image: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1 100%;
 }
 
-.header .menu li:hover {
-	cursor: pointer;
+.header .menu li+li {
+	border-left-width: 1px;
+	border-left-style: solid;
 
 	border-image: linear-gradient(rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 80%) 1 100%;
 	-moz-border-image: -moz-linear-gradient(rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 80%) 1 100%;
 	-webkit-border-image: -webkit-linear-gradient(rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 80%) 1 100%;
+
+}
+
+.header .menu li:hover {
+	cursor: pointer;
 }
 
 .header .menu #navArrow
