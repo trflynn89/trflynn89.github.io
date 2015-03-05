@@ -218,6 +218,24 @@ function handleClick(nav)
 }
 
 /**
+ * Handle a request to close the current navigation link.
+ */
+function handleClose()
+{
+    if (!handlingClick && (currStatus != TravelStatus.Resizing))
+    {
+        if (currStatus == TravelStatus.Enlarged)
+        {
+            resetPreviewImageDiv();
+        }
+        else
+        {
+            disableAllPopups();
+        }
+    }
+}
+
+/**
  * Initialize the events associated with pop ups.
  */
 $(document).ready(function()
@@ -233,7 +251,7 @@ $(document).ready(function()
     {
         if (event.keyCode === 0x1B)
         {
-            disableAllPopups();
+            handleClose();
         }
         else if (event.keyCode === 0x25)
         {
@@ -245,19 +263,10 @@ $(document).ready(function()
         }
     });
 
-    // Mouse click
-    $('body').click(function(event)
-    {
-        if (event.target === $('body')[0])
-        {
-            disableAllPopups();
-        }
-    });
-
     // Close button
     $('.popupClose').click(function()
     {
-        disableAllPopups();
+        handleClose();
     });
 
     // Resume
@@ -366,14 +375,33 @@ function getEnlargedImageDiv(imageId)
 {
     imageIdStr = pad(imageId);
 
-    var html = '<div class="enlargedDiv">';
-    html += '<h3>' + locationMap[imageId] + '</h3>';
+    var html = '<h3>' + locationMap[imageId] + '</h3>';
+
+    html += '<div class="enlargedDiv">';
     html += '<img src="img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
     html += '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="" />';
     html += '<img src="img/nav/right.png" id="navRight" class="popupNav" alt="" />'
     html += '</div>';
 
     return html;
+}
+
+/**
+ * Reset the travel div to the set of preview images.
+ */
+function resetPreviewImageDiv()
+{
+    currId = '';
+    currStatus = TravelStatus.Resizing;
+
+    $(NavId[Nav.Travel]).fadeOut(function()
+    {
+        $(NavId[Nav.Travel]).html(baseHtml).fadeIn(function()
+        {
+            //$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
+            currStatus = TravelStatus.Preview;
+        });
+    });
 }
 
 /**
@@ -412,6 +440,9 @@ function updateEnlargedImageDiv(direction)
     });
 }
 
+/**
+ * Load the set of travel preview images.
+ */
 function loadTravelImages()
 {
     baseHtml += getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands');
@@ -467,38 +498,28 @@ $(document).ready(function()
         currStatus = TravelStatus.Preview;
         loadTravelImages();
     }
-});
 
-$(NavId[Nav.Travel]).click(function(event)
-{
-    if (event.target.id.indexOf(idHeader) === -1)
+    $(NavId[Nav.Travel]).click(function(event)
     {
-        if (event.target.id === 'navLeft')
+        if (event.target.id.indexOf(idHeader) === -1)
         {
-            updateEnlargedImageDiv('left');
-        }
-        else if (event.target.id === 'navRight')
-        {
-            updateEnlargedImageDiv('right');
-        }
-    }
-    else if (currStatus === TravelStatus.Preview)
-    {
-        currId = '#' + event.target.id;
-        updateEnlargedImageDiv();
-    }
-    else if (currStatus === TravelStatus.Enlarged)
-    {
-        currId = '';
-        currStatus = TravelStatus.Resizing;
-
-        $(NavId[Nav.Travel]).fadeOut(function()
-        {
-            $(NavId[Nav.Travel]).html(baseHtml).fadeIn(function()
+            if (event.target.id === 'navLeft')
             {
-                //$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
-                currStatus = TravelStatus.Preview;
-            });
-        });
-    }
+                updateEnlargedImageDiv('left');
+            }
+            else if (event.target.id === 'navRight')
+            {
+                updateEnlargedImageDiv('right');
+            }
+        }
+        else if (currStatus === TravelStatus.Preview)
+        {
+            currId = '#' + event.target.id;
+            updateEnlargedImageDiv();
+        }
+        else if (currStatus === TravelStatus.Enlarged)
+        {
+            resetPreviewImageDiv();
+        }
+    });
 });
