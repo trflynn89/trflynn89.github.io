@@ -7,33 +7,17 @@
 
 /********** IE DETECTION **********/
 
-/**
- * Parse the User-Agent string to see if this browser is IE10 or earlier.
- */
-function isEarlierThanIE11(v)
-{
-    return RegExp('msie', 'i').test(navigator.userAgent);
-}
-
 $(document).ready(function()
 {
-    if (isEarlierThanIE11())
+    var isEarlierThanIE11 = RegExp('msie', 'i').test(navigator.userAgent);
+
+    if (isEarlierThanIE11)
     {
         window.location.replace('http://timothy-flynn.com/ie.html');
     }
 });
 
 /********** PAGE SETUP **********/
-
-var Status = { Hidden : 0, Visible : 1 };
-
-var Nav = { Resume : 0, Projects : 1, Travel : 2, Music : 3, Contact : 4, NumNav : 5 };
-var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupMusic', '#popupContact');
-var NavLink = new Array('#resume', '#projects', '#travel', '#music', '#contact');
-var NavStatus = new Array();
-var NavScroll = new Array();
-var NavSpeed = new Array(200, 200, 50, 50, 'auto');
-var NavInertia = new Array(950, 950, 600, 600, 950);
 
 var contactMap;
 
@@ -69,12 +53,84 @@ $(document).ready(function()
 
 /********** GENERAL POP UPS **********/
 
-var handlingClick = false;
-var navArrowId = '#navArrow';
-var loadedNav = -1;
+var Status = { Hidden : 0, Visible : 1 };
+
+var Nav = { Resume : 0, Projects : 1, Travel : 2, TravelEnlarged : 3, Music : 4, Contact : 5, NumNav : 6 };
+var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupTravelEnlarged', '#popupMusic', '#popupContact');
+var NavLink = new Array('#resume', '#projects', '#travel', '#travel', '#music', '#contact');
+var NavSpeed = new Array(200, 200, 50, 200, 50, 'auto');
+var NavInertia = new Array(950, 950, 600, 950, 600, 950);
 
 /**
- * Check if the naviagation link is valid.
+ * Class to represent a basic stack.
+ */
+function Stack()
+{
+    this.m_stack = Array();
+
+    /**
+     * Push an element onto the stack.
+     */
+    this.Push = function(element)
+    {
+        this.m_stack.push(element);
+    }
+
+    /**
+     * Pop an element from the stack. Return false if there was nothing to pop.
+     */
+    this.Pop = function()
+    {
+        if (this.m_stack.length > 0)
+        {
+            return this.m_stack.pop();
+        }
+        return false;
+    }
+
+    /**
+     * Peek at the stack. Return false if there was nothing to look at.
+     */
+    this.Peek = function()
+    {
+        if (this.m_stack.length > 0)
+        {
+            return this.m_stack[this.m_stack.length - 1];
+        }
+        return false;
+    }
+
+    /**
+     * Check if an element is in the stack.
+     */
+    this.Contains = function(element)
+    {
+        return (this.m_stack.indexOf(element) != -1);
+    }
+
+    /**
+     * Check if any of a list of elements are in the stack. Uses the arguments
+     * array instead of any named arguments.
+     */
+    this.ContainsAnyOf = function()
+    {
+        for (var i = 0; i < arguments.length; ++i)
+        {
+            if (this.Contains(arguments[i]))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+var navArrowId = '#navArrow';
+var popupStack = new Stack();
+
+/**
+ * Check if the navigation link is valid.
  */
 function isValidNav(nav)
 {
@@ -85,14 +141,17 @@ function isValidNav(nav)
  * Reset the navigation arrow's position, based on the currently selected nav
  * pane.
  */
-function setNavArrowPos(nav)
+function setNavArrowPos()
 {
-    if (!isValidNav(nav) || (loadedNav === -1))
+    var nav = popupStack.Peek();
+
+    if (nav === false)
     {
+        $(navArrowId).css({ 'visibility' : 'hidden' });
         return;
     }
 
-    navLink = NavLink[nav];
+    var navLink = NavLink[nav];
 
     var left = $(navLink).position().left
         + parseInt($(navLink).css('padding-left'))
@@ -113,80 +172,61 @@ function setNavArrowPos(nav)
  */
 function loadPopup(nav)
 {
-    if (!isValidNav(nav) || (NavStatus[nav] === Status.Visible))
+    if (!isValidNav(nav))
     {
         return;
     }
 
-    loadedNav = nav;
-
-    var navId = NavId[nav];
-    NavStatus[nav] = Status.Visible;
+    popupStack.Push(nav);
 
     $(navArrowId).addClass('transition');
-    setNavArrowPos(nav);
+    setNavArrowPos();
 
-    $(navId).parents('.popup').fadeIn('slow', function()
+    $(NavId[nav]).parents('.popup').css('visibility', 'visible');
+
+    $(NavId[nav]).parents('.popup').fadeIn('slow', function()
     {
         $(navArrowId).removeClass('transition');
-        handlingClick = false;
     });
 
-    if (NavScroll[nav] === Status.Hidden)
+    $(NavId[nav]).parents('.popupContainer').mCustomScrollbar(
     {
-        NavScroll[nav] = Status.Visible;
-
-        $(navId).parents('.popupContainer').mCustomScrollbar(
+        alwaysShowScrollbar : 1,
+        scrollInertia : NavInertia[nav],
+        theme : 'dark-thin',
+        mouseWheel :
         {
-            alwaysShowScrollbar : 1,
-            scrollInertia : NavInertia[nav],
-            theme : 'dark-thin',
-            mouseWheel :
-            {
-                deltaFactor : NavSpeed[nav]
-            },
-            advanced :
-            {
-                updateOnContentResize: true
-            }
-        });
-    }
-}
-
-/**
- * Hide the pop up for the given navigation link.
- */
-function disablePopup(nav)
-{
-    if (!isValidNav(nav) || (NavStatus[nav] === Status.Hidden))
-    {
-        return;
-    }
-
-    $(navArrowId).css({ 'visibility' : 'hidden' });
-    loadedNav = -1;
-
-    NavStatus[nav] = Status.Hidden;
-    var navId = NavId[nav];
-
-    $(navId).parents('.popup').fadeOut('slow', function()
-    {
-        handlingClick = false;
+            deltaFactor : NavSpeed[nav]
+        },
+        advanced :
+        {
+            updateOnContentResize: true
+        }
     });
 }
 
 /**
- * Hide all pop ups except for the (optionally) given navigation link.
+ * Hide the topmost pop up. Return the hidden element, or false.
+ */
+function disablePopup()
+{
+    var nav = popupStack.Pop();
+
+    if (nav !== false)
+    {
+        $(NavId[nav]).parents('.popup').fadeOut('slow');
+        setNavArrowPos();
+    }
+
+    return nav;
+}
+
+/**
+ * Hide all pop ups.
  */
 function disableAllPopups(except)
 {
-    for (var i = 0; i < Nav.NumNav; ++i)
-    {
-        if (i !== except)
-        {
-            disablePopup(i);
-        }
-    }
+    while (disablePopup() !== false) { }
 }
 
 /**
@@ -195,43 +235,10 @@ function disableAllPopups(except)
  */
 function handleClick(nav)
 {
-    if (handlingClick || !isValidNav(nav))
+    if (!popupStack.Contains(nav))
     {
-        return;
-    }
-
-    handlingClick = true;
-
-    var navId = NavId[nav];
-
-    if (NavStatus[nav] === Status.Hidden)
-    {
-        $(navId).parents('.popup').css('visibility', 'visible');
-
-        disableAllPopups(nav);
+        disableAllPopups();
         loadPopup(nav);
-    }
-    else
-    {
-        disablePopup(nav);
-    }
-}
-
-/**
- * Handle a request to close the current navigation link.
- */
-function handleClose()
-{
-    if (!handlingClick && (currStatus != TravelStatus.Resizing))
-    {
-        if (currStatus == TravelStatus.Enlarged)
-        {
-            resetPreviewImageDiv();
-        }
-        else
-        {
-            disableAllPopups();
-        }
     }
 }
 
@@ -240,33 +247,27 @@ function handleClose()
  */
 $(document).ready(function()
 {
-    for (var i = 0; i < Nav.NumNav; ++i)
-    {
-        NavStatus.push(Status.Hidden);
-        NavScroll.push(Status.Hidden);
-    }
-
     // Key presses
     $(document).keyup(function(event)
     {
         if (event.keyCode === 0x1B)
         {
-            handleClose();
+            disablePopup();
         }
         else if (event.keyCode === 0x25)
         {
-            updateEnlargedImageDiv('left');
+            updateEnlargedImageDiv(Direction.Left);
         }
         else if (event.keyCode === 0x27)
         {
-            updateEnlargedImageDiv('right');
+            updateEnlargedImageDiv(Direction.Right);
         }
     });
 
     // Close button
     $('.popupClose').click(function()
     {
-        handleClose();
+        disablePopup();
     });
 
     // Resume
@@ -306,19 +307,12 @@ $(document).ready(function()
  */
 $(window).resize(function()
 {
-    if (!handlingClick)
-    {
-        setNavArrowPos(loadedNav);
-    }
+    setNavArrowPos();
 });
 
 /********** TRAVEL POP UP **********/
 
-var TravelStatus = { None : 0, Preview : 1, Enlarged : 2, Resizing : 3 };
-
-var currStatus = TravelStatus.None;
-var baseHtml = '';
-var currId = '';
+var Direction = { None : 0, Left : 1, Right : 2 };
 
 var minImageId = 1000;
 var maxImageId = -1;
@@ -327,11 +321,12 @@ var idHeader = 'trav-';
 var idPadLen = 3;
 
 var locationMap = Array();
+var currId = '';
 
 /**
  * Pad an integer value with 0's until its string length is >= idPadLen.
  */
-function pad(val)
+function pad0(val)
 {
     val = val.toString();
 
@@ -348,24 +343,13 @@ function pad(val)
  */
 function getPreviewImageDiv(imageId, imageLocation)
 {
-    imageIdStr = pad(imageId);
+    imageIdStr = pad0(imageId);
     locationMap[imageId] = imageLocation;
 
-    var html = '<div>'
-    html += '<img src="img/travel/' + imageIdStr + '.jpg" '
-    html += 'class="image" id="' + idHeader + imageIdStr + '" alt="" />'
-    html += '</div>'
+    minImageId = Math.min(imageId, minImageId);
+    maxImageId = Math.max(imageId, maxImageId);
 
-    if (imageId < minImageId)
-    {
-        minImageId = imageId;
-    }
-    if (imageId > maxImageId)
-    {
-        maxImageId = imageId;
-    }
-
-    return html;
+    return '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image" alt="' + locationMap[imageId] + '" />'
 }
 
 /**
@@ -373,35 +357,15 @@ function getPreviewImageDiv(imageId, imageLocation)
  */
 function getEnlargedImageDiv(imageId)
 {
-    imageIdStr = pad(imageId);
+    imageIdStr = pad0(imageId);
 
     var html = '<h3>' + locationMap[imageId] + '</h3>';
 
-    html += '<div class="enlargedDiv">';
     html += '<img src="img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
-    html += '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="" />';
+    html += '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="' + locationMap[imageId] + '" />';
     html += '<img src="img/nav/right.png" id="navRight" class="popupNav" alt="" />'
-    html += '</div>';
 
     return html;
-}
-
-/**
- * Reset the travel div to the set of preview images.
- */
-function resetPreviewImageDiv()
-{
-    currId = '';
-    currStatus = TravelStatus.Resizing;
-
-    $(NavId[Nav.Travel]).fadeOut(function()
-    {
-        $(NavId[Nav.Travel]).html(baseHtml).fadeIn(function()
-        {
-            //$(NavId[Nav.Travel]).mCustomScrollbar('scrollTo', currId);
-            currStatus = TravelStatus.Preview;
-        });
-    });
 }
 
 /**
@@ -410,34 +374,30 @@ function resetPreviewImageDiv()
  */
 function updateEnlargedImageDiv(direction)
 {
-    imageId = parseInt(currId.substring(1 + idHeader.length));
+    var imageId = parseInt(currId.substring(1 + idHeader.length));
 
-    if ((NavStatus[Nav.Travel] === Status.Hidden) || isNaN(imageId))
+    if (isNaN(imageId) || !popupStack.ContainsAnyOf(Nav.Travel, Nav.TravelEnlarged))
     {
         return;
     }
-    else if (direction === 'left')
+    else if (direction === Direction.Left)
     {
         imageId = (imageId > minImageId ? imageId - 1 : maxImageId);
-        currId = '#' + idHeader + pad(imageId);
+        currId = '#' + idHeader + pad0(imageId);
     }
-    else if (direction === 'right')
+    else if (direction === Direction.Right)
     {
         imageId = (imageId < maxImageId ? imageId + 1 : minImageId);
-        currId = '#' + idHeader + pad(imageId);
+        currId = '#' + idHeader + pad0(imageId);
     }
 
-    currStatus = TravelStatus.Resizing;
+    var html = getEnlargedImageDiv(imageId);
+    $(NavId[Nav.TravelEnlarged]).html(html);
 
-    $(NavId[Nav.Travel]).fadeOut(function()
+    if (direction === Direction.None)
     {
-        var html = getEnlargedImageDiv(imageId);
-
-        $(NavId[Nav.Travel]).html(html).fadeIn(function()
-        {
-            currStatus = TravelStatus.Enlarged;
-        });
-    });
+        loadPopup(Nav.TravelEnlarged);
+    }
 }
 
 /**
@@ -445,81 +405,80 @@ function updateEnlargedImageDiv(direction)
  */
 function loadTravelImages()
 {
-    baseHtml += getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands');
-    baseHtml += getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands');
-    baseHtml += getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands');
-    baseHtml += getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands');
-    baseHtml += getPreviewImageDiv(42, 'Little Cayman, Cayman Islands');
-    baseHtml += getPreviewImageDiv(1,  'Great Barrier Reef, Australia');
-    baseHtml += getPreviewImageDiv(2,  'Paradise, New Zealand');
-    baseHtml += getPreviewImageDiv(3,  'Oahu, New Zealand');
-    baseHtml += getPreviewImageDiv(4,  'Queenstown, New Zealand');
-    baseHtml += getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia');
-    baseHtml += getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia');
-    baseHtml += getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia');
-    baseHtml += getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia');
-    baseHtml += getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia');
-    baseHtml += getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia');
-    baseHtml += getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia');
-    baseHtml += getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia');
-    baseHtml += getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia');
-    baseHtml += getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia');
-    baseHtml += getPreviewImageDiv(21, 'Cook Strait - New Zealand');
-    baseHtml += getPreviewImageDiv(22, 'New Zealand');
-    baseHtml += getPreviewImageDiv(23, 'Zirakzigil - New Zealand');
-    baseHtml += getPreviewImageDiv(24, 'Takaro Road - New Zealand');
-    baseHtml += getPreviewImageDiv(25, 'Milford Sound - New Zealand');
-    baseHtml += getPreviewImageDiv(26, 'Milford Sound - New Zealand');
-    baseHtml += getPreviewImageDiv(27, 'Milford Sound - New Zealand');
-    baseHtml += getPreviewImageDiv(28, 'New Zealand');
-    baseHtml += getPreviewImageDiv(29, 'New Zealand');
-    baseHtml += getPreviewImageDiv(30, 'New Zealand');
-    baseHtml += getPreviewImageDiv(31, 'New Zealand');
-    baseHtml += getPreviewImageDiv(32, 'New Zealand');
-    baseHtml += getPreviewImageDiv(33, 'New Zealand');
-    baseHtml += getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US');
-    baseHtml += getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US');
-    baseHtml += getPreviewImageDiv(36, 'Townsville, Queensland, Australia');
-    baseHtml += getPreviewImageDiv(37, 'Cozumel, Mexico');
+    var html = '';
 
-    $(NavId[Nav.Travel]).append(baseHtml);
+    html += getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands');
+    html += getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands');
+    html += getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands');
+    html += getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands');
+    html += getPreviewImageDiv(42, 'Little Cayman, Cayman Islands');
+    html += getPreviewImageDiv(1,  'Great Barrier Reef, Australia');
+    html += getPreviewImageDiv(2,  'Paradise, New Zealand');
+    html += getPreviewImageDiv(3,  'Oahu, New Zealand');
+    html += getPreviewImageDiv(4,  'Queenstown, New Zealand');
+    html += getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia');
+    html += getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia');
+    html += getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia');
+    html += getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia');
+    html += getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia');
+    html += getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia');
+    html += getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia');
+    html += getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia');
+    html += getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia');
+    html += getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia');
+    html += getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia');
+    html += getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia');
+    html += getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia');
+    html += getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia');
+    html += getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia');
+    html += getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia');
+    html += getPreviewImageDiv(21, 'Cook Strait - New Zealand');
+    html += getPreviewImageDiv(22, 'New Zealand');
+    html += getPreviewImageDiv(23, 'Zirakzigil - New Zealand');
+    html += getPreviewImageDiv(24, 'Takaro Road - New Zealand');
+    html += getPreviewImageDiv(25, 'Milford Sound - New Zealand');
+    html += getPreviewImageDiv(26, 'Milford Sound - New Zealand');
+    html += getPreviewImageDiv(27, 'Milford Sound - New Zealand');
+    html += getPreviewImageDiv(28, 'New Zealand');
+    html += getPreviewImageDiv(29, 'New Zealand');
+    html += getPreviewImageDiv(30, 'New Zealand');
+    html += getPreviewImageDiv(31, 'New Zealand');
+    html += getPreviewImageDiv(32, 'New Zealand');
+    html += getPreviewImageDiv(33, 'New Zealand');
+    html += getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US');
+    html += getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US');
+    html += getPreviewImageDiv(36, 'Townsville, Queensland, Australia');
+    html += getPreviewImageDiv(37, 'Cozumel, Mexico');
+
+    $(NavId[Nav.Travel]).html(html);
 }
 
 $(document).ready(function()
 {
-    if (currStatus === TravelStatus.None)
-    {
-        currStatus = TravelStatus.Preview;
-        loadTravelImages();
-    }
+    loadTravelImages();
 
     $(NavId[Nav.Travel]).click(function(event)
+    {
+        currId = '#' + event.target.id;
+        updateEnlargedImageDiv(Direction.None);
+    });
+
+    $(NavId[Nav.TravelEnlarged]).click(function(event)
     {
         if (event.target.id.indexOf(idHeader) === -1)
         {
             if (event.target.id === 'navLeft')
             {
-                updateEnlargedImageDiv('left');
+                updateEnlargedImageDiv(Direction.Left);
             }
             else if (event.target.id === 'navRight')
             {
-                updateEnlargedImageDiv('right');
+                updateEnlargedImageDiv(Direction.Right);
             }
         }
-        else if (currStatus === TravelStatus.Preview)
+        else
         {
-            currId = '#' + event.target.id;
-            updateEnlargedImageDiv();
-        }
-        else if (currStatus === TravelStatus.Enlarged)
-        {
-            resetPreviewImageDiv();
+            updateEnlargedImageDiv(Direction.Right);
         }
     });
 });
