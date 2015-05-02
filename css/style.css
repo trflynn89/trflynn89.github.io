@@ -23,6 +23,7 @@ body {
 }
 
 a {
+    color: rgb(0, 149, 255);
     text-decoration: none;
 }
 
@@ -77,7 +78,12 @@ header nav ul li+li {
 }
 
 header nav ul li:hover {
+    color: rgb(0, 149, 255);
     cursor: pointer;
+}
+
+header nav ul li.selected {
+    color: rgb(0, 149, 255);
 }
 
 header #navSignature {
@@ -86,18 +92,6 @@ header #navSignature {
 
     font-size: 30px;
     font-weight: bold;
-}
-
-header nav #navArrow {
-    position: absolute;
-    visibility: hidden;
-}
-
-header nav #navArrow.transition {
-    transition: left 0.5s ease-in-out;
-    -o-transition: left 0.5s ease-in-out;
-    -moz-transition: left 0.5s ease-in-out;
-    -webkit-transition: left 0.5s ease-in-out;
 }
 
 .popup {

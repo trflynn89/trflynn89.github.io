@@ -126,7 +126,6 @@ function Stack()
     }
 }
 
-var navArrowId = '#navArrow';
 var popupStack = new Stack();
 
 /**
@@ -135,36 +134,6 @@ var popupStack = new Stack();
 function isValidNav(nav)
 {
     return ((nav >= 0) && (nav < Nav.NumNav));
-}
-
-/**
- * Reset the navigation arrow's position, based on the currently selected nav
- * pane.
- */
-function setNavArrowPos()
-{
-    var nav = popupStack.Peek();
-
-    if (nav === false)
-    {
-        $(navArrowId).css({ 'visibility' : 'hidden' });
-        return;
-    }
-
-    var navLink = NavLink[nav];
-
-    var left = $(navLink).position().left
-        + parseInt($(navLink).css('padding-left'))
-        + $(navLink).width() / 2
-        - $(navArrowId).width() / 2;
-
-    var top = $('nav').position().top
-        + $('nav').height()
-        - $(navArrowId).height();
-
-    $(navArrowId).css({ 'visibility' : 'visible' });
-    $(navArrowId).css({ 'left' : left });
-    $(navArrowId).css({ 'top' : top });
 }
 
 /**
@@ -179,15 +148,9 @@ function loadPopup(nav)
 
     popupStack.Push(nav);
 
-    $(navArrowId).addClass('transition');
-    setNavArrowPos();
-
     $(NavId[nav]).parents('.popup').css('visibility', 'visible');
-
-    $(NavId[nav]).parents('.popup').fadeIn('slow', function()
-    {
-        $(navArrowId).removeClass('transition');
-    });
+    $(NavId[nav]).parents('.popup').fadeIn('slow');
+    $(NavLink[nav]).addClass('selected');
 
     $(NavId[nav]).parents('.popupContainer').mCustomScrollbar(
     {
@@ -215,7 +178,7 @@ function disablePopup()
     if (nav !== false)
     {
         $(NavId[nav]).parents('.popup').fadeOut('slow');
-        setNavArrowPos();
+        $(NavLink[nav]).removeClass('selected');
     }
 
     return nav;
@@ -300,14 +263,6 @@ $(document).ready(function()
         handleClick(Nav.Contact);
         contactMap.invalidateSize();
     });
-});
-
-/**
- * Reset the navigation's arrow position when the window is resized.
- */
-$(window).resize(function()
-{
-    setNavArrowPos();
 });
 
 /********** TRAVEL POP UP **********/
