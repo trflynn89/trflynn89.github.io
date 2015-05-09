@@ -69,6 +69,22 @@ function Stack()
     this.m_stack = Array();
 
     /**
+     * Get the size of the stack.
+     */
+    this.Size = function()
+    {
+        return this.m_stack.length;
+    }
+
+    /**
+     * Check if the stack is empty.
+     */
+    this.Empty = function()
+    {
+        return (this.Size() === 0);
+    }
+
+    /**
      * Push an element onto the stack.
      */
     this.Push = function(element)
@@ -81,11 +97,11 @@ function Stack()
      */
     this.Pop = function()
     {
-        if (this.m_stack.length > 0)
+        if (this.Empty())
         {
-            return this.m_stack.pop();
+            return false;
         }
-        return false;
+        return this.m_stack.pop();
     }
 
     /**
@@ -93,11 +109,11 @@ function Stack()
      */
     this.Peek = function()
     {
-        if (this.m_stack.length > 0)
+        if (this.Empty())
         {
-            return this.m_stack[this.m_stack.length - 1];
+            return false;
         }
-        return false;
+        return this.m_stack[this.Size() - 1];
     }
 
     /**
@@ -178,7 +194,11 @@ function disablePopup()
     if (nav !== false)
     {
         $(NavId[nav]).parents('.popup').fadeOut('slow');
-        $(NavLink[nav]).removeClass('selected');
+
+        if (popupStack.Empty())
+        {
+            $(NavLink[nav]).removeClass('selected');
+        }
     }
 
     return nav;
