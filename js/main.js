@@ -53,8 +53,6 @@ $(document).ready(function()
 
 /********** GENERAL POP UPS **********/
 
-var Status = { Hidden : 0, Visible : 1 };
-
 var Nav = { Resume : 0, Projects : 1, Travel : 2, TravelEnlarged : 3, Music : 4, Contact : 5, NumNav : 6 };
 var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupTravelEnlarged', '#popupMusic', '#popupContact');
 var NavLink = new Array('#resume', '#projects', '#travel', '#travel', '#music', '#contact');
@@ -121,7 +119,7 @@ function Stack()
      */
     this.Contains = function(element)
     {
-        return (this.m_stack.indexOf(element) != -1);
+        return (this.m_stack.indexOf(element) !== -1);
     }
 
     /**
@@ -180,6 +178,16 @@ function loadPopup(nav)
         advanced :
         {
             updateOnContentResize: true
+        },
+        callbacks :
+        {
+            whileScrolling : function()
+            {
+                if (popupStack.Peek() === Nav.Travel)
+                {
+                    updateTravelPreview(this);
+                }
+            }
         }
     });
 }
@@ -230,6 +238,8 @@ function handleClick(nav)
  */
 $(document).ready(function()
 {
+    var firstTravelLoad = true;
+
     // Key presses
     $(document).keyup(function(event)
     {
@@ -269,6 +279,12 @@ $(document).ready(function()
     $('#travel').click(function()
     {
         handleClick(Nav.Travel);
+
+        if (firstTravelLoad)
+        {
+            loadTravelImages(imagesToLoad);
+            firstTravelLoad = false;
+        }
     });
 
     // Music
@@ -288,6 +304,9 @@ $(document).ready(function()
 /********** TRAVEL POP UP **********/
 
 var Direction = { None : 0, Left : 1, Right : 2 };
+
+var imageList = new Array();
+var imagesToLoad = 6;
 
 var minImageId = 1000;
 var maxImageId = -1;
@@ -376,61 +395,85 @@ function updateEnlargedImageDiv(direction)
 }
 
 /**
- * Load the set of travel preview images.
+ * Callback for the travel popup's scrollbar change. When the scrollbar has
+ * reached 80% of the popup's height, start loading the next set of images.
  */
-function loadTravelImages()
+function updateTravelPreview(scrollBar)
+{
+    if (scrollBar.mcs.topPct > 80)
+    {
+        loadTravelImages(imagesToLoad);
+    }
+}
+
+/**
+ * Create an array to hold the HTML for all travel preview images.
+ */
+function createTravelImageList()
+{
+    imageList.push(getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands'));
+    imageList.push(getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands'));
+    imageList.push(getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands'));
+    imageList.push(getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands'));
+    imageList.push(getPreviewImageDiv(42, 'Little Cayman, Cayman Islands'));
+    imageList.push(getPreviewImageDiv(1,  'Great Barrier Reef, Australia'));
+    imageList.push(getPreviewImageDiv(2,  'Paradise, New Zealand'));
+    imageList.push(getPreviewImageDiv(3,  'Oahu, New Zealand'));
+    imageList.push(getPreviewImageDiv(4,  'Queenstown, New Zealand'));
+    imageList.push(getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia'));
+    imageList.push(getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia'));
+    imageList.push(getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia'));
+    imageList.push(getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia'));
+    imageList.push(getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia'));
+    imageList.push(getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia'));
+    imageList.push(getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia'));
+    imageList.push(getPreviewImageDiv(21, 'Cook Strait - New Zealand'));
+    imageList.push(getPreviewImageDiv(22, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(23, 'Zirakzigil - New Zealand'));
+    imageList.push(getPreviewImageDiv(24, 'Takaro Road - New Zealand'));
+    imageList.push(getPreviewImageDiv(25, 'Milford Sound - New Zealand'));
+    imageList.push(getPreviewImageDiv(26, 'Milford Sound - New Zealand'));
+    imageList.push(getPreviewImageDiv(27, 'Milford Sound - New Zealand'));
+    imageList.push(getPreviewImageDiv(28, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(29, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(30, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(31, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(32, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(33, 'New Zealand'));
+    imageList.push(getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US'));
+    imageList.push(getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US'));
+    imageList.push(getPreviewImageDiv(36, 'Townsville, Queensland, Australia'));
+    imageList.push(getPreviewImageDiv(37, 'Cozumel, Mexico'));
+}
+
+/**
+ * Append the HTML for a given number of preview images to the travel popup.
+ */
+function loadTravelImages(imagesToLoad)
 {
     var html = '';
 
-    html += getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands');
-    html += getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands');
-    html += getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands');
-    html += getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands');
-    html += getPreviewImageDiv(42, 'Little Cayman, Cayman Islands');
-    html += getPreviewImageDiv(1,  'Great Barrier Reef, Australia');
-    html += getPreviewImageDiv(2,  'Paradise, New Zealand');
-    html += getPreviewImageDiv(3,  'Oahu, New Zealand');
-    html += getPreviewImageDiv(4,  'Queenstown, New Zealand');
-    html += getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia');
-    html += getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia');
-    html += getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia');
-    html += getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia');
-    html += getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia');
-    html += getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia');
-    html += getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia');
-    html += getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia');
-    html += getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia');
-    html += getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia');
-    html += getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia');
-    html += getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia');
-    html += getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia');
-    html += getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia');
-    html += getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia');
-    html += getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia');
-    html += getPreviewImageDiv(21, 'Cook Strait - New Zealand');
-    html += getPreviewImageDiv(22, 'New Zealand');
-    html += getPreviewImageDiv(23, 'Zirakzigil - New Zealand');
-    html += getPreviewImageDiv(24, 'Takaro Road - New Zealand');
-    html += getPreviewImageDiv(25, 'Milford Sound - New Zealand');
-    html += getPreviewImageDiv(26, 'Milford Sound - New Zealand');
-    html += getPreviewImageDiv(27, 'Milford Sound - New Zealand');
-    html += getPreviewImageDiv(28, 'New Zealand');
-    html += getPreviewImageDiv(29, 'New Zealand');
-    html += getPreviewImageDiv(30, 'New Zealand');
-    html += getPreviewImageDiv(31, 'New Zealand');
-    html += getPreviewImageDiv(32, 'New Zealand');
-    html += getPreviewImageDiv(33, 'New Zealand');
-    html += getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US');
-    html += getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US');
-    html += getPreviewImageDiv(36, 'Townsville, Queensland, Australia');
-    html += getPreviewImageDiv(37, 'Cozumel, Mexico');
+    while ((--imagesToLoad >= 0) && (imageList.length > 0))
+    {
+        html += imageList.shift();
+    }
 
-    $(NavId[Nav.Travel]).html(html);
+    $(NavId[Nav.Travel]).append(html);
 }
 
 $(document).ready(function()
 {
-    loadTravelImages();
+    createTravelImageList();
+    loadTravelImages(imagesToLoad);
 
     $(NavId[Nav.Travel]).click(function(event)
     {
