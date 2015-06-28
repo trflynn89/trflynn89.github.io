@@ -141,6 +141,22 @@ function Stack()
 }
 
 var popupStack = new Stack();
+var keyPresses = Array();
+
+/**
+ * Figure out how many keys are currently being pressed.
+ */
+function countKeyPresses()
+{
+    var count = 0;
+
+    for (var i = 0; i < keyPresses.length; ++i)
+    {
+        count += (keyPresses[i] === true);
+    }
+
+    return count;
+}
 
 /**
  * Check if the navigation link is valid.
@@ -163,7 +179,11 @@ function loadPopup(nav)
     popupStack.Push(nav);
 
     $(NavId[nav]).parents('.popup').css('visibility', 'visible');
-    $(NavId[nav]).parents('.popup').fadeIn('slow');
+    $(NavId[nav]).parents('.popup').fadeIn('slow', function()
+    {
+        $(NavId[nav]).focus();
+    });
+
     $(NavLink[nav]).addClass('selected');
 
     $(NavId[nav]).parents('.popupContainer').mCustomScrollbar(
@@ -207,6 +227,12 @@ function disablePopup()
         {
             $(NavLink[nav]).removeClass('selected');
         }
+        else
+        {
+            var currNav = popupStack.Peek();
+            $(NavId[currNav]).focus();
+        }
+
     }
 
     return nav;
@@ -241,9 +267,20 @@ $(document).ready(function()
     var firstTravelLoad = true;
 
     // Key presses
+    $(document).keydown(function(event)
+    {
+        keyPresses[event.keyCode] = true;
+    });
+
     $(document).keyup(function(event)
     {
-        if (event.keyCode === 0x1B)
+        keyPresses[event.keyCode] = false;
+
+        if (countKeyPresses() !== 0)
+        {
+            return;
+        }
+        else if (event.keyCode === 0x1B)
         {
             disablePopup();
         }

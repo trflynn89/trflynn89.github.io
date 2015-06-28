@@ -97,11 +97,11 @@ header #navSignature {
 .popup {
     visibility: hidden;
 
-    height: 80%;
+    height: 800px;
     width: 850px;
 
     position : absolute;
-    top : 13%;
+    top : 130px;
     left : 50%;
     margin-left : -446px;
 
@@ -157,14 +157,11 @@ header #navSignature {
     height: 185px;
 }
 
-.popup #popupTravelEnlarged img {
+.popup #popupTravelEnlarged .enlargedImage {
     vertical-align: middle;
     margin-left: 5px;
     margin-right: 5px;
     float: none;
-}
-
-.popup #popupTravelEnlarged img.enlargedImage {
     width: 700px;
     height: auto;
 }
