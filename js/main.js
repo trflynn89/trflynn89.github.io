@@ -141,22 +141,6 @@ function Stack()
 }
 
 var popupStack = new Stack();
-var keyPresses = Array();
-
-/**
- * Figure out how many keys are currently being pressed.
- */
-function countKeyPresses()
-{
-    var count = 0;
-
-    for (var i = 0; i < keyPresses.length; ++i)
-    {
-        count += (keyPresses[i] === true);
-    }
-
-    return count;
-}
 
 /**
  * Check if the navigation link is valid.
@@ -176,17 +160,26 @@ function loadPopup(nav)
         return;
     }
 
+    var container = $(NavId[nav]).parents('.popupContainer');
+    var popup = $(NavId[nav]).parents('.popup');
     popupStack.Push(nav);
 
-    $(NavId[nav]).parents('.popup').css('visibility', 'visible');
-    $(NavId[nav]).parents('.popup').fadeIn('slow', function()
+    $(NavId[nav]).focus(function()
+    {
+        $(NavId[nav]).parents('.popupContainer').mCustomScrollbar("scrollTo", "+=0", {
+            timeout : 1
+        });
+    });
+
+    popup.css('visibility', 'visible');
+    popup.fadeIn('slow', function()
     {
         $(NavId[nav]).focus();
     });
 
     $(NavLink[nav]).addClass('selected');
 
-    $(NavId[nav]).parents('.popupContainer').mCustomScrollbar(
+    container.mCustomScrollbar(
     {
         alwaysShowScrollbar : 1,
         scrollInertia : NavInertia[nav],
@@ -197,7 +190,8 @@ function loadPopup(nav)
         },
         advanced :
         {
-            updateOnContentResize: true
+            updateOnContentResize : true,
+            autoScrollOnFocus : true
         },
         callbacks :
         {
@@ -267,16 +261,9 @@ $(document).ready(function()
     var firstTravelLoad = true;
 
     // Key presses
-    $(document).keydown(function(event)
-    {
-        keyPresses[event.keyCode] = true;
-    });
-
     $(document).keyup(function(event)
     {
-        keyPresses[event.keyCode] = false;
-
-        if (countKeyPresses() !== 0)
+        if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
         {
             return;
         }
@@ -291,6 +278,17 @@ $(document).ready(function()
         else if (event.keyCode === 0x27)
         {
             updateEnlargedImageDiv(Direction.Right);
+        }
+    });
+
+    // Refocus on current popup
+    $(document).mouseup(function()
+    {
+        var nav = popupStack.Peek();
+
+        if (nav !== false)
+        {
+            $(NavId[nav]).focus();
         }
     });
 
