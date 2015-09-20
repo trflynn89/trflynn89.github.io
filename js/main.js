@@ -13,7 +13,7 @@ $(document).ready(function()
 
     if (isEarlierThanIE11)
     {
-        window.location.replace('http://timothy-flynn.com/ie.html');
+        window.location.replace('/ie.html');
     }
 });
 
