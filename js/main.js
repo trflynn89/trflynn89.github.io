@@ -24,10 +24,10 @@ var contactMap;
 $(document).ready(function()
 {
     // Display background image
-    $.backstretch('http://timothy-flynn.com/img/background.jpg');
+    $.backstretch('/img/background.jpg');
 
     // Display resume - converted with zamzar.com
-    $(NavId[Nav.Resume]).append('<img src="img/TimothyFlynnResume-030215.png" alt="" />');
+    $(NavId[Nav.Resume]).append('<img src="/img/TimothyFlynnResume-030215.png" alt="" />');
 
     // Display YouTube videos
     $('.lazyYT').lazyYT();
@@ -378,7 +378,7 @@ function getPreviewImageDiv(imageId, imageLocation)
     minImageId = Math.min(imageId, minImageId);
     maxImageId = Math.max(imageId, maxImageId);
 
-    return '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image" alt="' + locationMap[imageId] + '" />'
+    return '<img src="/img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image" alt="' + locationMap[imageId] + '" />'
 }
 
 /**
@@ -390,9 +390,9 @@ function getEnlargedImageDiv(imageId)
 
     var html = '<h3>' + locationMap[imageId] + '</h3>';
 
-    html += '<img src="img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
-    html += '<img src="img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="' + locationMap[imageId] + '" />';
-    html += '<img src="img/nav/right.png" id="navRight" class="popupNav" alt="" />'
+    html += '<img src="/img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
+    html += '<img src="/img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="' + locationMap[imageId] + '" />';
+    html += '<img src="/img/nav/right.png" id="navRight" class="popupNav" alt="" />'
 
     return html;
 }
