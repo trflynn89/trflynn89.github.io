@@ -56,7 +56,7 @@ $(document).ready(function()
 var Nav = { Resume : 0, Projects : 1, Travel : 2, TravelEnlarged : 3, Music : 4, Contact : 5, NumNav : 6 };
 var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupTravelEnlarged', '#popupMusic', '#popupContact');
 var NavLink = new Array('#resume', '#projects', '#travel', '#travel', '#music', '#contact');
-var NavSpeed = new Array(200, 200, 50, 200, 50, 'auto');
+var NavSpeed = new Array(200, 200, 150, 200, 50, 'auto');
 var NavInertia = new Array(950, 950, 600, 950, 600, 950);
 
 /**
@@ -451,6 +451,8 @@ function createTravelImageList()
     imageList.push(getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands'));
     imageList.push(getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands'));
     imageList.push(getPreviewImageDiv(42, 'Little Cayman, Cayman Islands'));
+    imageList.push(getPreviewImageDiv(43, 'Tour Eiffel, Paris, France'));
+    imageList.push(getPreviewImageDiv(44, 'Château de Versailles, Versailles, France'));
     imageList.push(getPreviewImageDiv(1,  'Great Barrier Reef, Australia'));
     imageList.push(getPreviewImageDiv(2,  'Paradise, New Zealand'));
     imageList.push(getPreviewImageDiv(3,  'Oahu, New Zealand'));
