@@ -1,539 +1,251 @@
-/**
- * Scripts to handle the pop ups associated with the navigation links.
- *
- * @author Timothy Flynn
- * @version July 28, 2014
- */
+/*
+    Astral by HTML5 UP
+    html5up.net | @n33co
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
 
-/********** IE DETECTION **********/
+(function($) {
 
-$(document).ready(function()
-{
-    var isEarlierThanIE11 = RegExp('msie', 'i').test(navigator.userAgent);
+    var settings = {
 
-    if (isEarlierThanIE11)
-    {
-        window.location.replace('/ie.html');
-    }
-});
+        // Speed to resize panel.
+            resizeSpeed: 600,
 
-/********** PAGE SETUP **********/
+        // Speed to fade in/out.
+            fadeSpeed: 300,
 
-var contactMap;
+        // Size factor.
+            sizeFactor: 11.5,
 
-$(document).ready(function()
-{
-    // Display background image
-    $.backstretch('/img/background.jpg');
+        // Minimum point size.
+            sizeMin: 15,
 
-    // Display resume - converted with zamzar.com
-    $(NavId[Nav.Resume]).append('<img src="/img/TimothyFlynnResume-030215.png" alt="" />');
+        // Maximum point size.
+            sizeMax: 20
 
-    // Display YouTube videos
-    $('.lazyYT').lazyYT();
+    };
 
-    // Display map
-    var coord = L.latLng(42.252156, -71.003295);
-    contactMap = L.map('map').setView(coord, 16);
+    var $window = $(window);
 
-    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-        id: 'trflynn89.j35n6m41'
-    }).addTo(contactMap);
+    $window.on('load', function() {
 
-    L.marker(coord).addTo(contactMap)
-        .bindPopup(
-            '<b>ViaSat, Inc.</b>' +
-            '<br />1250 Hancock Street 701-N' +
-            '<br />Quincy, MA 02169'
-    ).openPopup();
-
-    // Hide all popups so jQuery has them loaded
-    $('.popup').hide();
-});
-
-/********** GENERAL POP UPS **********/
-
-var Nav = { Resume : 0, Projects : 1, Travel : 2, TravelEnlarged : 3, Music : 4, Contact : 5, NumNav : 6 };
-var NavId = new Array('#popupResume', '#popupProjects', '#popupTravel', '#popupTravelEnlarged', '#popupMusic', '#popupContact');
-var NavLink = new Array('#resume', '#projects', '#travel', '#travel', '#music', '#contact');
-var NavSpeed = new Array(200, 200, 150, 200, 50, 'auto');
-var NavInertia = new Array(950, 950, 600, 950, 600, 950);
-
-/**
- * Class to represent a basic stack.
- */
-function Stack()
-{
-    this.m_stack = Array();
-
-    /**
-     * Get the size of the stack.
-     */
-    this.Size = function()
-    {
-        return this.m_stack.length;
-    }
-
-    /**
-     * Check if the stack is empty.
-     */
-    this.Empty = function()
-    {
-        return (this.Size() === 0);
-    }
-
-    /**
-     * Push an element onto the stack.
-     */
-    this.Push = function(element)
-    {
-        this.m_stack.push(element);
-    }
-
-    /**
-     * Pop an element from the stack. Return false if there was nothing to pop.
-     */
-    this.Pop = function()
-    {
-        if (this.Empty())
-        {
-            return false;
-        }
-        return this.m_stack.pop();
-    }
-
-    /**
-     * Peek at the stack. Return false if there was nothing to look at.
-     */
-    this.Peek = function()
-    {
-        if (this.Empty())
-        {
-            return false;
-        }
-        return this.m_stack[this.Size() - 1];
-    }
-
-    /**
-     * Check if an element is in the stack.
-     */
-    this.Contains = function(element)
-    {
-        return (this.m_stack.indexOf(element) !== -1);
-    }
-
-    /**
-     * Check if any of a list of elements are in the stack. Uses the arguments
-     * array instead of any named arguments.
-     */
-    this.ContainsAnyOf = function()
-    {
-        for (var i = 0; i < arguments.length; ++i)
-        {
-            if (this.Contains(arguments[i]))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-var popupStack = new Stack();
-
-/**
- * Check if the navigation link is valid.
- */
-function isValidNav(nav)
-{
-    return ((nav >= 0) && (nav < Nav.NumNav));
-}
-
-/**
- * Display the pop up for the given navigation link.
- */
-function loadPopup(nav)
-{
-    if (!isValidNav(nav))
-    {
-        return;
-    }
-
-    var container = $(NavId[nav]).parents('.popupContainer');
-    var popup = $(NavId[nav]).parents('.popup');
-    popupStack.Push(nav);
-
-    $(NavId[nav]).focus(function()
-    {
-        $(NavId[nav]).parents('.popupContainer').mCustomScrollbar("scrollTo", "+=0", {
-            timeout : 1
-        });
-    });
-
-    popup.css('visibility', 'visible');
-    popup.fadeIn('slow', function()
-    {
-        $(NavId[nav]).focus();
-    });
-
-    $(NavLink[nav]).addClass('selected');
-
-    container.mCustomScrollbar(
-    {
-        alwaysShowScrollbar : 1,
-        scrollInertia : NavInertia[nav],
-        theme : 'dark-thin',
-        mouseWheel :
-        {
-            deltaFactor : NavSpeed[nav]
-        },
-        advanced :
-        {
-            updateOnContentResize : true,
-            autoScrollOnFocus : true
-        },
-        callbacks :
-        {
-            whileScrolling : function()
-            {
-                if (popupStack.Peek() === Nav.Travel)
-                {
-                    updateTravelPreview(this);
+        skel
+            .breakpoints({
+                desktop: '(min-width: 737px)',
+                mobile: '(max-width: 736px)'
+            })
+            .viewport({
+                breakpoints: {
+                    desktop: {
+                        width: 1080,
+                        scalable: false
+                    }
                 }
-            }
-        }
-    });
-}
+            })
+            .on('+desktop', function() {
 
-/**
- * Hide the topmost pop up. Return the hidden element, or false.
- */
-function disablePopup()
-{
-    var nav = popupStack.Pop();
+                var $body = $('body'),
+                    $main = $('#main'),
+                    $panels = $main.find('.panel'),
+                    $hbw = $('html,body,window'),
+                    $footer = $('#footer'),
+                    $wrapper = $('#wrapper'),
+                    $nav = $('#nav'), $nav_links = $nav.find('a'),
+                    $jumplinks = $('.jumplink'),
+                    $form = $('form'),
+                    panels = [],
+                    activePanelId = null,
+                    firstPanelId = null,
+                    isLocked = false,
+                    hash = window.location.hash.substring(1);
 
-    if (nav !== false)
-    {
-        $(NavId[nav]).parents('.popup').fadeOut('slow');
+                if (skel.vars.touch) {
 
-        if (popupStack.Empty())
-        {
-            $(NavLink[nav]).removeClass('selected');
-        }
-        else
-        {
-            var currNav = popupStack.Peek();
-            $(NavId[currNav]).focus();
-        }
+                    settings.fadeSpeed = 0;
+                    settings.resizeSpeed = 0;
+                    $nav_links.find('span').remove();
 
-    }
+                }
 
-    return nav;
-}
+                // Body.
+                    $body._resize = function() {
+                        var factor = ($window.width() * $window.height()) / (1440 * 900);
+                        $body.css('font-size', Math.min(Math.max(Math.floor(factor * settings.sizeFactor), settings.sizeMin), settings.sizeMax) + 'pt');
+                        $main.height(panels[activePanelId].outerHeight());
+                        $body._reposition();
+                    };
 
-/**
- * Hide all pop ups.
- */
-function disableAllPopups(except)
-{
-    while (disablePopup() !== false) { }
-}
+                    $body._reposition = function() {
+                        if (skel.vars.touch && (window.orientation == 0 || window.orientation == 180))
+                        {
+                            $wrapper.css('padding-top', Math.max((($window.height() - (panels[activePanelId].outerHeight() + $footer.outerHeight())) / 2) - $nav.height(), 30) + 'px');
+                        }
+                        else
+                        {
+                            $wrapper.css('padding-top', ((($window.height() - panels[firstPanelId].height()) / 3) - $nav.height()) + 'px');
+                        }
+                    };
 
-/**
- * Handle a click on the given navigation link. Hide all other popups and
- * display this one.
- */
-function handleClick(nav)
-{
-    if (!popupStack.Contains(nav))
-    {
-        disableAllPopups();
-        loadPopup(nav);
-    }
-}
+                // Panels.
+                    $panels.each(function(i) {
+                        var t = $(this), id = t.attr('id');
 
-/**
- * Initialize the events associated with pop ups.
- */
-$(document).ready(function()
-{
-    var firstTravelLoad = true;
+                        panels[id] = t;
 
-    // Key presses
-    $(document).keyup(function(event)
-    {
-        if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
-        {
-            return;
-        }
-        else if (event.keyCode === 0x1B)
-        {
-            disablePopup();
-        }
-        else if (event.keyCode === 0x25)
-        {
-            updateEnlargedImageDiv(Direction.Left);
-        }
-        else if (event.keyCode === 0x27)
-        {
-            updateEnlargedImageDiv(Direction.Right);
-        }
-    });
+                        if (i == 0) {
 
-    // Refocus on current popup
-    $(document).mouseup(function()
-    {
-        var nav = popupStack.Peek();
+                            firstPanelId = id;
+                            activePanelId = id;
 
-        if (nav !== false)
-        {
-            $(NavId[nav]).focus();
-        }
-    });
+                        }
+                        else
+                            t.hide();
 
-    // Close button
-    $('.popupClose').click(function()
-    {
-        disablePopup();
-    });
+                        t._activate = function(instant) {
 
-    // Resume
-    $('#resume').click(function()
-    {
-        handleClick(Nav.Resume);
-    });
+                            // Check lock state and determine whether we're already at the target.
+                                if (isLocked
+                                ||  activePanelId == id)
+                                    return false;
 
-    // Projects
-    $('#projects').click(function()
-    {
-        handleClick(Nav.Projects);
-    });
+                            // Lock.
+                                isLocked = true;
 
-    // Travel
-    $('#travel').click(function()
-    {
-        handleClick(Nav.Travel);
+                            // Change nav link (if it exists).
+                                $nav_links.removeClass('active');
+                                $nav_links.filter('[href="#' + id + '"]').addClass('active');
 
-        if (firstTravelLoad)
-        {
-            loadTravelImages(imagesToLoad);
-            firstTravelLoad = false;
-        }
-    });
+                            // Change hash.
+                                if (i == 0)
+                                    window.location.hash = '#';
+                                else
+                                    window.location.hash = '#' + id;
 
-    // Music
-    $('#music').click(function()
-    {
-        handleClick(Nav.Music);
-    });
+                            // Add bottom padding.
+                                var x = parseInt($wrapper.css('padding-top')) +
+                                        panels[id].outerHeight() +
+                                        $nav.outerHeight() +
+                                        $footer.outerHeight();
 
-    // Contact
-    $('#contact').click(function()
-    {
-        handleClick(Nav.Contact);
-        contactMap.invalidateSize();
-    });
-});
+                                if (x > $window.height())
+                                    $wrapper.addClass('tall');
+                                else
+                                    $wrapper.removeClass('tall');
 
-/********** TRAVEL POP UP **********/
+                            // Fade out active panel.
+                                $footer.fadeTo(settings.fadeSpeed, 0.0001);
+                                panels[activePanelId].fadeOut(instant ? 0 : settings.fadeSpeed, function() {
 
-var Direction = { None : 0, Left : 1, Right : 2 };
+                                    // Set new active.
+                                        activePanelId = id;
 
-var imageList = new Array();
-var imagesToLoad = 6;
+                                        // Force scroll to top.
+                                            $hbw.animate({
+                                                scrollTop: 0
+                                            }, settings.resizeSpeed, 'swing');
 
-var minImageId = 1000;
-var maxImageId = -1;
+                                        // Reposition.
+                                            $body._reposition();
 
-var idHeader = 'trav-';
-var idPadLen = 3;
+                                        // Resize main to height of new panel.
+                                            $main.animate({
+                                                height: panels[activePanelId].outerHeight()
+                                            }, instant ? 0 : settings.resizeSpeed, 'swing', function() {
 
-var locationMap = Array();
-var currId = '';
+                                                // Fade in new active panel.
+                                                    $footer.fadeTo(instant ? 0 : settings.fadeSpeed, 1.0);
+                                                    panels[activePanelId].fadeIn(instant ? 0 : settings.fadeSpeed, function() {
 
-/**
- * Pad an integer value with 0's until its string length is >= idPadLen.
- */
-function pad0(val)
-{
-    val = val.toString();
+                                                        // Unlock.
+                                                            isLocked = false;
 
-    while (val.length < idPadLen)
-    {
-        val = '0' + val;
-    }
+                                                    });
+                                            });
 
-    return val;
-}
+                                });
 
-/**
- * Construct the HTML div to hold image previews.
- */
-function getPreviewImageDiv(imageId, imageLocation)
-{
-    imageIdStr = pad0(imageId);
-    locationMap[imageId] = imageLocation;
+                        };
 
-    minImageId = Math.min(imageId, minImageId);
-    maxImageId = Math.max(imageId, maxImageId);
+                    });
 
-    return '<img src="/img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image" alt="' + locationMap[imageId] + '" />'
-}
+                // Nav + Jumplinks.
+                    $nav_links.add($jumplinks).click(function(e) {
+                        var t = $(this), href = t.attr('href'), id;
 
-/**
- * Construct the HTML div to hold an enlarged image.
- */
-function getEnlargedImageDiv(imageId)
-{
-    imageIdStr = pad0(imageId);
+                        if (href.substring(0,1) == '#') {
 
-    var html = '<h3>' + locationMap[imageId] + '</h3>';
+                            e.preventDefault();
+                            e.stopPropagation();
 
-    html += '<img src="/img/nav/left.png" id="navLeft" class="popupNav" alt="" />'
-    html += '<img src="/img/travel/' + imageIdStr + '.jpg" id="' + idHeader + imageIdStr + '" class="image enlargedImage" alt="' + locationMap[imageId] + '" />';
-    html += '<img src="/img/nav/right.png" id="navRight" class="popupNav" alt="" />'
+                            id = href.substring(1);
 
-    return html;
-}
+                            if (id in panels)
+                                panels[id]._activate();
 
-/**
- * Change the current enlarged image. If direction is left or right, use the
- * image that is +/- 1 of the current enlarged image (wrapping around).
- */
-function updateEnlargedImageDiv(direction)
-{
-    var imageId = parseInt(currId.substring(1 + idHeader.length));
+                        }
 
-    if (isNaN(imageId) || !popupStack.ContainsAnyOf(Nav.Travel, Nav.TravelEnlarged))
-    {
-        return;
-    }
-    else if (direction === Direction.Left)
-    {
-        imageId = (imageId > minImageId ? imageId - 1 : maxImageId);
-        currId = '#' + idHeader + pad0(imageId);
-    }
-    else if (direction === Direction.Right)
-    {
-        imageId = (imageId < maxImageId ? imageId + 1 : minImageId);
-        currId = '#' + idHeader + pad0(imageId);
-    }
+                    });
 
-    var html = getEnlargedImageDiv(imageId);
-    $(NavId[Nav.TravelEnlarged]).html(html);
+                // Window.
+                    $window
+                        .resize(function() {
 
-    if (direction === Direction.None)
-    {
-        loadPopup(Nav.TravelEnlarged);
-    }
-}
+                            if (!isLocked)
+                                $body._resize();
 
-/**
- * Callback for the travel popup's scrollbar change. When the scrollbar has
- * reached 80% of the popup's height, start loading the next set of images.
- */
-function updateTravelPreview(scrollBar)
-{
-    if (scrollBar.mcs.topPct > 80)
-    {
-        loadTravelImages(imagesToLoad);
-    }
-}
+                        });
 
-/**
- * Create an array to hold the HTML for all travel preview images.
- */
-function createTravelImageList()
-{
-    imageList.push(getPreviewImageDiv(38, 'Jackson Point - Little Cayman, Cayman Islands'));
-    imageList.push(getPreviewImageDiv(39, 'Bus Stop - Little Cayman, Cayman Islands'));
-    imageList.push(getPreviewImageDiv(40, 'Bus Stop - Little Cayman, Cayman Islands'));
-    imageList.push(getPreviewImageDiv(41, 'Central Caribbean Marine Institute - Little Cayman, Cayman Islands'));
-    imageList.push(getPreviewImageDiv(42, 'Little Cayman, Cayman Islands'));
-    imageList.push(getPreviewImageDiv(43, 'Tour Eiffel, Paris, France'));
-    imageList.push(getPreviewImageDiv(44, 'Château de Versailles, Versailles, France'));
-    imageList.push(getPreviewImageDiv(1,  'Great Barrier Reef, Australia'));
-    imageList.push(getPreviewImageDiv(2,  'Paradise, New Zealand'));
-    imageList.push(getPreviewImageDiv(3,  'Oahu, New Zealand'));
-    imageList.push(getPreviewImageDiv(4,  'Queenstown, New Zealand'));
-    imageList.push(getPreviewImageDiv(5,  'St. Kilda Beach - Melbourne, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(6,  'Melbourne Zoo - Melbourne, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(7,  'Melbourne Zoo - Melbourne, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(8,  'The Twelve Apostles - Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(9,  'Grampians National Park - Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(10, 'Grampians National Park - Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(11, 'Melbourne Cricket Ground - Melbourne, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(12, 'Werribee Open Range Zoo - Werribee, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(13, 'Healesville Sanctuary - Healesville, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(14, 'Healesville Sanctuary - Healesville, Victoria, Australia'));
-    imageList.push(getPreviewImageDiv(15, 'Blue Mountains - New South Wales, Australia'));
-    imageList.push(getPreviewImageDiv(16, 'Sydney Opera House - Sydney, New South Wales, Australia'));
-    imageList.push(getPreviewImageDiv(17, 'Sydney Opera House - Sydney, New South Wales, Australia'));
-    imageList.push(getPreviewImageDiv(18, 'Harbour Bridge - Sydney, New South Wales, Australia'));
-    imageList.push(getPreviewImageDiv(19, 'Flynn Reef - Great Barrier Reef, Australia'));
-    imageList.push(getPreviewImageDiv(20, 'Flynn Reef - Great Barrier Reef, Australia'));
-    imageList.push(getPreviewImageDiv(21, 'Cook Strait - New Zealand'));
-    imageList.push(getPreviewImageDiv(22, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(23, 'Zirakzigil - New Zealand'));
-    imageList.push(getPreviewImageDiv(24, 'Takaro Road - New Zealand'));
-    imageList.push(getPreviewImageDiv(25, 'Milford Sound - New Zealand'));
-    imageList.push(getPreviewImageDiv(26, 'Milford Sound - New Zealand'));
-    imageList.push(getPreviewImageDiv(27, 'Milford Sound - New Zealand'));
-    imageList.push(getPreviewImageDiv(28, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(29, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(30, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(31, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(32, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(33, 'New Zealand'));
-    imageList.push(getPreviewImageDiv(34, 'Pawtuckaway State Park - New Hampshire, US'));
-    imageList.push(getPreviewImageDiv(35, 'Pawtuckaway State Park - New Hampshire, US'));
-    imageList.push(getPreviewImageDiv(36, 'Townsville, Queensland, Australia'));
-    imageList.push(getPreviewImageDiv(37, 'Cozumel, Mexico'));
-}
+                    $window
+                        .on('orientationchange', function() {
 
-/**
- * Append the HTML for a given number of preview images to the travel popup.
- */
-function loadTravelImages(imagesToLoad)
-{
-    var html = '';
+                            if (!isLocked)
+                                $body._reposition();
 
-    while ((--imagesToLoad >= 0) && (imageList.length > 0))
-    {
-        html += imageList.shift();
-    }
+                        });
 
-    $(NavId[Nav.Travel]).append(html);
-}
+                    if (skel.vars.IEVersion < 9)
+                        $window
+                            .on('resize', function() {
+                                $wrapper.css('min-height', $window.height());
+                            });
 
-$(document).ready(function()
-{
-    createTravelImageList();
-    loadTravelImages(imagesToLoad);
+                // Fix: Placeholder polyfill.
+                    $('form').placeholder();
 
-    $(NavId[Nav.Travel]).click(function(event)
-    {
-        currId = '#' + event.target.id;
-        updateEnlargedImageDiv(Direction.None);
+                // Prioritize "important" elements on mobile.
+                    skel.on('+mobile -mobile', function() {
+                        $.prioritize(
+                            '.important\\28 mobile\\29',
+                            skel.breakpoint('mobile').active
+                        );
+                    });
+
+                // CSS polyfills (IE<9).
+                    if (skel.vars.IEVersion < 9)
+                        $(':last-child').addClass('last-child');
+
+                // Init.
+                    $window
+                        .trigger('resize');
+
+                    if (hash && hash in panels)
+                        panels[hash]._activate(true);
+
+                    $wrapper.fadeTo(400, 1.0);
+
+            })
+            .on('-desktop', function() {
+
+                window.setTimeout(function() {
+                    location.reload(true);
+                }, 50);
+
+            });
+
+
+        // Display YouTube videos
+        $('.lazyYT').lazyYT();
+
     });
 
-    $(NavId[Nav.TravelEnlarged]).click(function(event)
-    {
-        if (event.target.id.indexOf(idHeader) === -1)
-        {
-            if (event.target.id === 'navLeft')
-            {
-                updateEnlargedImageDiv(Direction.Left);
-            }
-            else if (event.target.id === 'navRight')
-            {
-                updateEnlargedImageDiv(Direction.Right);
-            }
-        }
-        else
-        {
-            updateEnlargedImageDiv(Direction.Right);
-        }
-    });
-});
+})(jQuery);
