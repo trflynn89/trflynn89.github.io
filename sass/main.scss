@@ -37,6 +37,7 @@ body {
     background-image: url('/img/overlay.png'), url('/img/background.jpg');
     background-repeat: repeat, no-repeat;
     background-size: auto, 100% 100%;
+    background-color: #999;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
     color: #777777;
@@ -712,6 +713,10 @@ ol {
     body, input, textarea, select {
         font-size: 11pt;
         line-height: 1.75em;
+    }
+
+    body {
+        background-image: none;
     }
 
     h1, h2 {
